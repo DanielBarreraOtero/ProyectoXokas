@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route("/api", name: "api_")]
+#[Route("/api", name: "api_mesa")]
 class ApiMesaController extends AbstractController
 {
     #[Route('/mesa/{id}', name: 'getMesa', methods: 'GET')]
@@ -40,7 +40,8 @@ class ApiMesaController extends AbstractController
                 'ancho' => $mesa->getAncho(),
                 'posY' => $mesa->getPosY(),
                 'posX' => $mesa->getPosX(),
-                'sillas' => $mesa->getSillas()
+                'sillas' => $mesa->getSillas(),
+                'reservas' => $mesa->getReservas()
             ];
         }
 

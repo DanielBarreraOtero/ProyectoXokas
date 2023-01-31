@@ -6,9 +6,11 @@ use App\Repository\JuegoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use stdClass;
 
 #[ORM\Entity(repositoryClass: JuegoRepository::class)]
-class Juego
+class Juego implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -165,5 +167,21 @@ class Juego
         }
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        $std = new stdClass();
+
+        $std->id = $this->getId();
+        $std->nombre = $this->getNombre();
+        $std->anchoTablero = $this->getAnchoTablero();
+        $std->altoTablero = $this->getAltoTablero();
+        $std->minJugadores = $this->getMinJugadores();
+        $std->maxJugadores = $this->getMaxJugadores();
+        $std->presentaciones = $this->getPresentaciones();
+        $std->reservas = $this->getReservas();
+
+        return $std;
     }
 }
