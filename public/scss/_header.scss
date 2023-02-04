@@ -13,7 +13,8 @@
     }
 }
 
-.header__menu {
+// Hacemos que ambos tengan el mismo estilo para porder utilizar dropdowns en los dos
+.header__menu, .header__right {
     text-align: center;
 
     ul {
@@ -101,22 +102,22 @@
     }
 }
 
-.header__right {
-    text-align: right;
-    padding: 20px 0 15px;
+// .header__right {
+//     text-align: right;
+//     padding: 20px 0 15px;
 
-    a {
-        display: inline-block;
-        font-size: 18px;
-        color: $white-color;
-        margin-right: 30px;
+//     a {
+//         display: inline-block;
+//         font-size: 18px;
+//         color: $white-color;
+//         margin-right: 30px;
 
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-}
+//         &:last-child {
+//             margin-right: 0;
+//         }
+//     }
+// }
 
 .slicknav_menu {
     display: none;
-  }
+}

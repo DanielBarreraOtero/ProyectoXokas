@@ -1,105 +1,207 @@
-$(function () {
-    $(".mesa").draggable({
-        start: function (ev, ui) {
-            $(this).attr("data-y", ui.offset.top);
-            $(this).attr("data-x", ui.offset.left);
-        },
-        revert: true,
-        revertDuration: 0,
-        helper: 'clone',
-        accept: '#almacen, #sala',
-    });
+class Sala {
 
+    constructor(div) {
+        this.mesas = [];
+        this.div = div;
 
-    $('#almacen').droppable({
-        drop: function (ev, ui) {
-            let mesa = ui.draggable;
-            console.log(mesa);
-            mesa.css({ position: '' });
-            $(this).append(mesa);
-        }
-    });
+        this.div.droppable({
+            drop: function (ev, ui) {
+                // coge el div de la mesa que esta siendo soltada
+                var divMesa = ui.draggable;
+                var mesa = divMesa.data('mesa');
+                var sala = $(this).data('sala');
 
-    $("#sala").droppable({
-        drop: function (ev, ui) {
-            // coge la mesa que esta siendo soltada
-            var mesa = ui.draggable;
-            var left = parseInt(ui.offset.left);
-            mesa.newLeft = parseInt(ui.offset.left);
-            mesa.newRight = left + mesa.width();
-            var top = parseInt(ui.offset.top);
-            mesa.newTop = parseInt(ui.offset.top);
-            mesa.newBottom = top + mesa.width();
-            let width = mesa.width();
-            let height = mesa.height();
+                divMesa.newLeft = parseInt(ui.offset.left);
+                divMesa.newTop = parseInt(ui.offset.top);
+                divMesa.newRight = divMesa.newLeft + divMesa.width();
+                divMesa.newBottom = divMesa.newTop + divMesa.height();
 
-            let pos1 = [left, left + width, top, top + height];
-
-            // metodo mesa posicion valida (mesa, sala)
-            // dada una mesa y una sala, comprueba que la mesa este dentro de la sala
-            // y que no choque con ninguna de el resto de mesas de la sala
-
-            posicionValida(mesa, $(this));
-
-            let mesaYa = $('#sala .mesa').eq(0);
-            if (mesaYa.length > 0) {
-                let posX = parseInt(mesaYa.offset().left);
-                let posY = parseInt(mesaYa.offset().top);
-                let anchura = mesaYa.width();
-                let longitud = mesaYa.height();
-                let pos2 = [posX, posX + anchura, posY, posY + longitud];
-
-                if ((pos1[0] > pos2[0] && pos1[0] < pos2[1] ||
-                    pos1[1] > pos2[0] && pos1[1] < pos2[1] ||
-                    pos1[0] <= pos2[0] && pos1[1] >= pos2[1])
-
-                    &&
-
-                    (pos1[2] > pos2[2] && pos1[2] < pos2[3] ||
-                        pos1[3] > pos2[2] && pos1[3] < pos2[3] ||
-                        pos1[2] <= pos2[2] && pos1[3] >= pos2[3])) {
-                } else {
-                    $(this).append(mesa);
-                    mesa.css({ position: 'absolute', top: top + "px", left: left + "px" });
+                if (posicionValida(divMesa, sala.div)) {
+                    sala.addMesa(mesa, divMesa.newTop, divMesa.newLeft);
+                    mesa.update();
                 }
-            } else {
-                $(this).append(mesa);
-                mesa.css({ position: 'absolute', top: top + "px", left: left + "px" });
+            }
+        }).data('sala', this);
+    }
+
+    addMesa(mesa, top, left) {
+        this.mesas.push(mesa);
+        mesa.padre = this;
+
+        // mesa.top = top;
+        // mesa.left = left;
+        // mesa.bottom = top + mesa.height;
+        // mesa.right = left + mesa.width;
+        mesa.top = top - this.div.offset().top;
+        mesa.left = left - this.div.offset().left;
+        mesa.bottom = top + mesa.height - this.div.offset().top;
+        mesa.right = left + mesa.width - this.div.offset().left;
+
+        if (mesa.div) {
+            mesa.div.appendTo(this.div)
+                .css({
+                    position: 'absolute',
+                    top: top,
+                    left: left,
+                    backgroundColor: ''
+                });
+
+        }
+    }
+
+}
+
+class Almacen {
+
+    constructor(div) {
+        this.mesas = [];
+        this.div = div;
+
+        this.div.droppable({
+            drop: function (ev, ui) {
+                let divMesa = ui.draggable;
+                let mesa = divMesa.data('mesa');
+                let almacen = $(this).data('almacen');
+
+                almacen.addMesa(mesa);
+                mesa.update();
+            }
+        })
+            .data('almacen', this)
+            .css({ overflow: 'scroll' });
+    }
+
+    addMesa(mesa) {
+        this.mesas.push(mesa);
+        mesa.padre = this;
+
+        mesa.top = -1;
+        mesa.left = -1;
+        mesa.bottom = -1;
+        mesa.right = -1;
+
+        if (mesa.div) {
+            mesa.div.appendTo(this.div)
+                .css({
+                    position: ''
+                });
+        }
+    }
+
+}
+
+class Mesa {
+
+    constructor(left, top, width, height, sillas, id) {
+        this.left = left;
+        this.top = top;
+        this.width = width;
+        this.height = height;
+        this.right = left + width;
+        this.bottom = top + height;
+        this.sillas = sillas
+        this.idBD = id;
+        this.id = 'mesa_' + id;
+    }
+
+    creaDiv() {
+        this.div = $('<div>')
+            .attr({ id: this.id, class: 'mesa' })
+            .data('mesa', this)
+            .css({
+                width: this.width + 'px',
+                height: this.height + 'px',
+                border: '2px solid black'
+            }).draggable({
+                drag: function (ev, ui) {
+                    let mesa = $(this);
+
+                    mesa.newLeft = parseInt(ui.offset.left);
+                    mesa.newTop = parseInt(ui.offset.top);
+                    mesa.newRight = mesa.newLeft + mesa.width();
+                    mesa.newBottom = mesa.newTop + mesa.height();
+
+                    if (posicionValida(mesa, $("#sala"))) {
+                        ui.helper.css({ backgroundColor: 'green' });
+                    } else {
+                        ui.helper.css({ backgroundColor: 'red' });
+                    }
+                },
+                revert: true,
+                revertDuration: 0,
+                helper: 'clone',
+                accept: '#almacen, #sala',
+            });
+
+        return this.div;
+    }
+
+    update() {
+        var data = {
+            mesa: {
+                id: this.idBD,
+                alto: this.height,
+                ancho: this.width,
+                posY: this.top,
+                posX: this.left,
+                sillas: this.sillas,
+            }
+        };
+
+        $.ajax({
+            type: "PUT",
+            url: "/api/mesa",
+            data: JSON.stringify(data),
+            dataType: "JSON"
+        });
+    }
+}
+
+function posicionValida(mesa, sala) {
+    var choca = false;
+    var idMesa = mesa.attr('id').split('_')[1];
+
+    if (chocaSala(mesa, sala)) {
+        return choca;
+    }
+
+    // comprueba si choca con cada mesa de la sala
+    $.each($('#sala [id^=mesa_]'), function () {
+        let mesa2 = $(this)
+        let idMesa2 = mesa2.attr('id').split('_')[1];
+
+        // si el id es el mismo no se comprueba, para que no comprueba si choca consigo misma
+        if (idMesa != idMesa2) {
+            choca = chocaMesa(mesa, mesa2);
+
+            // si choca con una, dejamos de comprobar con el resto (corta el bucle)
+            if (choca) {
+                return false
             }
         }
     });
-});
 
-// TODO:
-function posicionValida(mesa, sala) {
+    return !choca;
 
-    if (!chocaSala(mesa, sala)) {
-        console.log('no choca sala');
-
-        // TODO: coger las mesas por id en vez de por clase
-        // si la cogemos por clase, tambien se incluye el helper del draggable
-        console.log($('#sala '));
-        console.log($('#sala .mesa').length);
-    }
-
-    return false;
 }
 
 function chocaSala(mesa, sala) {
     dimensiona(sala);
 
-    console.log(mesa);
-    console.log(sala);
+    let chocaX = mesa.newLeft < sala.left || mesa.newRight > sala.right;
+    let chocaY = mesa.newTop < sala.top || mesa.newBottom > sala.bottom;
 
-    if (mesa.newLeft >= sala.left && mesa.newRight <= sala.right &&
-        mesa.newTop >= sala.top && mesa.newBottom <= sala.bottom) {
-        return false
-    }
-
-    return true;
+    return chocaX || chocaY;
 }
 
-function chocaMesa(mesa1, mesa2) { }
+function chocaMesa(mesa1, mesa2) {
+    dimensiona(mesa2);
+
+    let chocaX = (mesa1.newRight > mesa2.left && mesa1.newLeft < mesa2.right);
+    let chocaY = (mesa1.newBottom > mesa2.top && mesa1.newTop < mesa2.bottom);
+
+    return chocaX && chocaY;
+}
 
 function dimensiona(comp) {
     comp.left = comp.offset().left;

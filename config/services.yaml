@@ -20,5 +20,16 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Service\QueCalorHace:
+        arguments:
+            # Por defecto Jaén, Jaén
+            $codProvincia: '23'
+            $codMunicipio: '23050'
+    
+    App\Service\XokasMailer:
+        arguments:
+            $sender: 'dbarote0812@g.educaand.es'
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

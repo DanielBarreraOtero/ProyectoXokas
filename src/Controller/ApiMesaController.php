@@ -34,7 +34,7 @@ class ApiMesaController extends AbstractController
         $data['ok'] = true;
 
         foreach ($mesas as $mesa) {
-            $data[] = [
+            $data['mesas'][] = [
                 'id' => $mesa->getId(),
                 'alto' => $mesa->getAlto(),
                 'ancho' => $mesa->getAncho(),
