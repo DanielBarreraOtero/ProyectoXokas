@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\JuegoRepository;
 use App\Repository\UsuarioRepository;
 use App\Service\Calculadora;
 use App\Service\MessageGenerator;
@@ -18,9 +19,11 @@ use Symfony\Component\Mime\Email;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(): Response
+    public function index(JuegoRepository $repJuego): Response
     {
-        return $this->render('base.html.twig');
+        $juegos = $repJuego->findAll();
+
+        return $this->render('index.html.twig', ['juegos' => $juegos]);
     }
 
     #[Route('/haceAdmin/{id}', name: 'haceAdmin')]

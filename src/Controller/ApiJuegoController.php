@@ -34,7 +34,7 @@ class ApiJuegoController extends AbstractController
         $data['ok'] = true;
 
         foreach ($juegos as $juego) {
-            $data[] = [
+            $data['juegos'][] = [
                 'id' => $juego->getId(),
                 'nombre' => $juego->getNombre(),
                 'anchoTablero' => $juego->getAnchoTablero(),

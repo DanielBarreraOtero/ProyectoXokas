@@ -20,7 +20,7 @@
 
 			<!-- Css Styles -->
 			<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-			<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+			<link rel="stylesheet" href="css/font-awesome.css" type="text/css">
 			<link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
 			<link rel="stylesheet" href="css/plyr.css" type="text/css">
 			<link rel="stylesheet" href="css/nice-select.css" type="text/css">
@@ -32,6 +32,7 @@
 
 		<script src="js/jquery-3.3.1.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/font-awesome.js"></script>
 		<script src="js/player.js"></script>
 		<script src="js/jquery.nice-select.min.js"></script>
 		<script src="js/mixitup.min.js"></script>
@@ -45,9 +46,9 @@
 		{% endblock %}
 
 		<style>
-		body {
-			color: white;
-		}
+			body {
+				color: white;
+			}
 		</style>
 	</head>
 	<body>
@@ -58,16 +59,31 @@
 			</div>
 		{% endblock %}
 
+		{# HEADER #}
+		{% block header %}
+			{% include "header.html.twig" %}
+		{% endblock %}
+
+		{# asociamos el rol en una variable para tener acceso mas simple a el #}
+		{% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+			{% set role = 'admin' %}
+
+		{% elseif app.user %}
+			{% set role = 'socio' %}
+
+		{% else %}
+			{% set role = 'usuario' %}
+
+		{% endif %}
+
+		{# CONTENIDO #}
 		{% block body %}
+			
+		{% endblock %}
 
-			{% block header %}
-				{% include "header.html.twig" %}
-			{% endblock %}
-
-
-            {% block footer %}
-				{% include "footer.html.twig" %}
-			{% endblock %}
+		{# FOOTER #}
+		{% block footer %}
+			{% include "footer.html.twig" %}
 		{% endblock %}
 
 		{% block search %}
