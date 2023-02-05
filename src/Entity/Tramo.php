@@ -48,4 +48,9 @@ class Tramo
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->horaInicio->format('H:i').' | '.$this->horaFin->format('H:i');
+    }
 }

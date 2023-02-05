@@ -184,4 +184,9 @@ class Juego implements JsonSerializable
 
         return $std;
     }
+
+    public function __toString()
+    {
+        return $this->id.' | '.$this->nombre;
+    }
 }

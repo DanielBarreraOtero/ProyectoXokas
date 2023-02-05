@@ -27,11 +27,7 @@ class Sala {
     addMesa(mesa, top, left) {
         this.mesas.push(mesa);
         mesa.padre = this;
-
-        // mesa.top = top;
-        // mesa.left = left;
-        // mesa.bottom = top + mesa.height;
-        // mesa.right = left + mesa.width;
+        
         mesa.top = top - this.div.offset().top;
         mesa.left = left - this.div.offset().left;
         mesa.bottom = top + mesa.height - this.div.offset().top;

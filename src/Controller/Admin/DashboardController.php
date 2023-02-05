@@ -2,10 +2,15 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\DiaFestivo;
 use App\Entity\Juego;
 use App\Entity\Mesa;
 use App\Entity\Reserva;
+use App\Entity\Tramo;
 use App\Entity\Usuario;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -48,11 +53,18 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToUrl('Inicio', 'fa fa-home', $this->generateUrl('home'));
         yield MenuItem::linkToCrud('Usuarios', 'fa fa-users', Usuario::class);
         yield MenuItem::linkToCrud('Juegos', 'fa fa-chess', Juego::class);
         yield MenuItem::linkToCrud('Mesas', 'fa fa-square', Mesa::class);
         yield MenuItem::linkToCrud('Reservas', 'fa fa-calendar-day', Reserva::class);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('Tramos', 'fa fa-clock', Tramo::class);
+        yield MenuItem::linkToCrud('DiasFestivos', 'fa fa-calendar', DiaFestivo::class);
+    }
+
+    public function configureActions(): Actions
+    {
+        return parent::configureActions()
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 }
