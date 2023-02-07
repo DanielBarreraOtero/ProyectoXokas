@@ -5,13 +5,16 @@
 				<h4>CATÁLOGO DE JUEGOS</h4>
 			</div>
 		</div>
-		{# <div class="col-lg-4 col-md-4 col-sm-4">
-			<div class="btn__all">
-				<a href="#" class="primary-btn">View All
-					<span class="arrow_right"></span>
-				</a>
+		{% if role is same as 'admin' %}
+			<div class="col-lg-4 col-md-4 col-sm-4">
+			{# TODO: cambiar posicionamiento #}
+				<div class="btn__añadir">
+					<a href="#" class="primary-btn">
+						<span class="fa fa-2x fa-plus"></span>
+					</a>
+				</div>
 			</div>
-		</div> #}
+		{% endif %}
 	</div>
 	<div class="row">
 
@@ -35,7 +38,8 @@
 						<div class="ep">{{ jugadores }} <span class="icon_profile"></span></div>
 						{# tamaño #}
 						<div class="comment">
-							<span class="fa fa-ruler-combined"></span> {{ juego.anchoTablero }} x {{ juego.altoTablero }}
+							<span class="fa fa-ruler-combined"></span> {{ juego.anchoTablero }} x {{ juego.altoTablero
+							}}
 						</div>
 						{# numero de veces reservado #}
 						<div class="view">
@@ -48,7 +52,7 @@
 							<li>Active</li>
 							<li>Movie</li>
 						</ul> #}
-						
+
 						{# nombre #}
 						<h4 class="text-light font-weight-bold">
 							{{ juego.nombre | capitalize}}
