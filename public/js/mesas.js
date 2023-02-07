@@ -27,7 +27,7 @@ class Sala {
     addMesa(mesa, top, left) {
         this.mesas.push(mesa);
         mesa.padre = this;
-        
+
         mesa.top = top - this.div.offset().top;
         mesa.left = left - this.div.offset().left;
         mesa.bottom = top + mesa.height - this.div.offset().top;
@@ -36,10 +36,15 @@ class Sala {
         if (mesa.div) {
             mesa.div.appendTo(this.div)
                 .css({
+                    display: '',
                     position: 'absolute',
                     top: top,
                     left: left,
-                    backgroundColor: ''
+                    backgroundColor: '',
+
+                    // nos aseguramos de que la mesa tiene el tamaño adecuado
+                    height: mesa.height,
+                    width: mesa.width
                 });
 
         }
@@ -77,10 +82,22 @@ class Almacen {
         mesa.right = -1;
 
         if (mesa.div) {
+            let texto = [$('<p>').html(mesa.width).css({ margin: 0 }),
+            $('<p>').html('x').css({ margin: 0 }),
+            $('<p>').html(mesa.height).css({ margin: 0 })];
+
             mesa.div.appendTo(this.div)
+                // le ponemos el mismo tamaño a todas las mesas
                 .css({
-                    position: ''
-                });
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    position: '',
+                    width: 100,
+                    height: 100
+                })
+                .html(texto);
         }
     }
 
@@ -107,7 +124,7 @@ class Mesa {
             .css({
                 width: this.width + 'px',
                 height: this.height + 'px',
-                border: '2px solid black'
+                border: '2px solid black',
             }).draggable({
                 drag: function (ev, ui) {
                     let mesa = $(this);
@@ -122,6 +139,29 @@ class Mesa {
                     } else {
                         ui.helper.css({ backgroundColor: 'red' });
                     }
+                },
+                start: function (ev, ui) {
+                    var mesa = $(this).data('mesa');
+
+                    // nos aseguramos de que el helper tiene el tamaño adecuado
+                    ui.helper.css({
+                        height: mesa.height,
+                        width: mesa.width
+                    }).text('');
+
+                    $(this).css({
+                        height: mesa.height,
+                        width: mesa.width,
+                        display: 'none'
+                    }).text('');
+                },
+                stop: function() {
+                    // para que en caso de que la intentemos mover y no se pueda
+                    // al no ser droppeada en ningun div, no se le aplicaria ningun estilo
+                    // le ponemos flex para que no desaparezca al chocar
+                    $(this).css({
+                        display: 'flex'
+                    });
                 },
                 revert: true,
                 revertDuration: 0,
