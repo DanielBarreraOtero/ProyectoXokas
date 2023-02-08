@@ -50,6 +50,7 @@
   }
 
   .comment {
+    text-align: center;
     font-size: 13px;
     color: $white-color;
     background: #3d3d3d;
@@ -58,18 +59,35 @@
     border-radius: 4px;
     position: absolute;
     left: 10px;
+    width: 25%;
     bottom: 10px;
   }
 
   .view {
+    text-align: center;
     font-size: 13px;
     color: $white-color;
     background: #3d3d3d;
     display: inline-block;
     padding: 2px 10px;
+    width: 25%;
     border-radius: 4px;
     position: absolute;
     right: 10px;
+    bottom: 10px;
+  }
+  
+  // boton de reservar hecho por mi
+  &__btn-reservar {
+    font-size: 17px;
+    color: $white-color;
+    background: $primary-color;
+    display: inline-block;
+    padding: 4px 17px;
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
     bottom: 10px;
   }
 }

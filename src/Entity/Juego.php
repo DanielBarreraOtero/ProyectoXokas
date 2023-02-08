@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\JuegoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use stdClass;
@@ -37,6 +38,10 @@ class Juego implements JsonSerializable
 
     #[ORM\OneToMany(mappedBy: 'juegos', targetEntity: Reserva::class)]
     private Collection $reservas;
+
+    #[ORM\Column(length: 255)]
+    private ?string $imagen = null;
+
 
     public function __construct()
     {
@@ -179,6 +184,7 @@ class Juego implements JsonSerializable
         $std->altoTablero = $this->getAltoTablero();
         $std->minJugadores = $this->getMinJugadores();
         $std->maxJugadores = $this->getMaxJugadores();
+        $std->imagen = $this->getImagen();
         $std->presentaciones = $this->getPresentaciones();
         $std->reservas = $this->getReservas();
 
@@ -188,5 +194,17 @@ class Juego implements JsonSerializable
     public function __toString()
     {
         return $this->id.' | '.$this->nombre;
+    }
+
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    public function setImagen($imagen): self
+    {
+        $this->imagen = $imagen;
+
+        return $this;
     }
 }

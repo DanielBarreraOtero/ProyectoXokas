@@ -1,0 +1,47 @@
+#c-modalReservas {
+    left: 50%;
+    transform: translate(-50%);
+    color: $normal-color;
+}
+
+#c-modalReservas > div{
+    max-width: 90vw;
+}
+
+#c-modalReservas .modal-content{
+    max-height: none;
+    height: 90vh;
+}
+
+#c-modalReservas .modal-body{
+    // overflow: auto;
+    // ::-webkit-scrollbar {
+    //     width: 10px;
+    //   }
+      
+    //   /* Track */
+    //   ::-webkit-scrollbar-track {
+    //     background: #f1f1f1; 
+    //   }
+       
+    //   /* Handle */
+    //   ::-webkit-scrollbar-thumb {
+    //     background: #888; 
+    //   }
+      
+    //   /* Handle on hover */
+    //   ::-webkit-scrollbar-thumb:hover {
+    //     background: #555; 
+    //   }
+}
+
+#c-modalReservas .show .card-body{
+    max-height: none;
+    height: 55vh;
+}
+
+#c-modalReservas .modal-footer{
+    border: none;
+}
+
+

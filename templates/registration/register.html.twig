@@ -1,22 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register
-{% endblock %}
-
 {% block body %}
+	{# 
+				<pre>
+			    {{ dump(registrationForm) }}
+				</pre> #}
 
-	<pre>
-    {{ dump(registrationForm) }}
-</pre>
-	<h1>Register</h1>
+	{# banner #}
+		<section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg"> <div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="normal__breadcrumb__text">
+						<h2>registro</h2>
+						<p>Bienvenido a la página oficial de XoKaSyCIA</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-	{{ form_start(registrationForm) }}
-	{{ form_row(registrationForm.email) }}
-	{{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-	{{ form_row(registrationForm.agreeTerms) }}
+	{# {{ form_start(registrationForm) }}
+					{{form_label(registrationForm.email) }}
+					{{ form_widget(registrationForm.email) }}
+					 {{ form_row(registrationForm.email) }}
+					{{ form_row(registrationForm.plainPassword, {
+				            label: 'Password'
+				        }) }}
+					{{ form_row(registrationForm.agreeTerms) }}
+				
+					<button type="submit" class="btn">Register</button>
+					{{ form_end(registrationForm) }} #}
 
-	<button type="submit" class="btn">Register</button>
-	{{ form_end(registrationForm) }}
+	<!-- Login Section Begin -->
+	<section class="login spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div
+						class="login__form">
+						{# titulo #}
+						<h3>Registro</h3>
+
+						{# TODO: Hacer estilos para el formulario #}
+
+						{# formulario #}
+						{{ form_start(registrationForm) }}
+
+						<div class="input__item">
+							{{form_label(registrationForm.email) }}
+							{{ form_widget(registrationForm.email) }}
+						</div>
+
+						{# {{ form_row(registrationForm.email) }} #}
+						{{ form_row(registrationForm.plainPassword, {label: 'Password'}) }}
+						{{ form_row(registrationForm.agreeTerms) }}
+
+						<button type="submit" class="site-btn">Registrar</button>
+						{{ form_end(registrationForm) }}
+
+
+					{# <form action="{{ path('app_login') }}" method="post">
+																																	<div class="input__item">
+																																		<input type="email" placeholder="Email address" id="username" name="_username" value="{{ last_username }}">
+																																		<span class="icon_mail"></span>
+																																	</div>
+																																	<div class="input__item">
+																																		<input type="password" placeholder="Password" id="password" name="_password">
+																																		<span class="icon_lock"></span>
+																																	</div>
+																										
+																																	<input type="hidden" name="_target_path" value="/">
+																																	<button type="submit" class="site-btn">Login</button>
+																																</form>
+																										
+																																{# btn olvido su contraseña #}
+						{# <a href="#" class="forget_pass">¿Olvidó su contraseña?</a> #}
+					</div>
+				</div>
+				<div
+					class="col-lg-4">
+					{# enlace a registro #}
+					<div class="login__register">
+						<h3>¿Ya tiene cuenta?</h3>
+						<a href="{{ url('app_login') }}" class="primary-btn">Inicie sesión</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Login Section End -->
 {% endblock %}

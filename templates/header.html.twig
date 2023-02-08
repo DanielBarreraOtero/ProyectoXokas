@@ -3,9 +3,9 @@
 	<div class="container">
 		<div class="row">
 			{% block logo %}
-				<div class="col-lg-3">
+				<div class="col-lg-2">
 					<div class="header__logo">
-						<a href="./index.html">
+						<a href="{{ url('home') }}">
 							<img src="img/LogoXoKas.png" alt="">
 						</a>
 					</div>
@@ -15,12 +15,15 @@
 			{# Si el usuario esta logeado y es un admin se carga un menu de navegacion diferente #}
 			{% if app.user and 'ROLE_ADMIN' in app.user.roles %}
 				{% block navAdmin %}
-					<div class="col-lg-6">
+					<div class="col-lg-8">
 						<div class="header__nav">
 							<nav class="header__menu mobile-menu">
 								<ul>
 									<li class="active">
 										<a href="{{ url('home')}}">Juegos</a>
+									</li>
+									<li class="">
+										<a href="{{ url('admin')}}">Mantenimiento</a>
 									</li>
 									<li>
 										<a href="./categories.html">Sala</a>
@@ -29,7 +32,7 @@
 										<a href="./blog.html">Reservas</a>
 									</li>
 									<li>
-										<a href="#">Usuarios</a>
+										<a href="#">Eventos</a>
 									</li>
 								</ul>
 							</nav>
@@ -39,7 +42,7 @@
 			{% else %}
 				{# si no esta logeado, o si lo esta pero es un socio, se carga el menu normal #}
 				{% block navUser %}
-					<div class="col-lg-6">
+					<div class="col-lg-8">
 						<div class="header__nav">
 							<nav class="header__menu mobile-menu">
 								<ul>
@@ -61,7 +64,7 @@
 
 
 			{% block personal %}
-				<div class="col-lg-3">
+				<div class="col-lg-2">
 					<div class="header__right">
 						<ul>
 							<li>
