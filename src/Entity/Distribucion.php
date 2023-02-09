@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DistribucionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,8 +19,13 @@ class Distribucion
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha = null;
 
-    #[ORM\Column]
-    private array $mesas = [];
+    #[ORM\OneToMany(mappedBy: 'distribucion', targetEntity: Posicionamiento::class)]
+    private Collection $posicionamientos;
+
+    public function __construct()
+    {
+        $this->posicionamientos = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -38,15 +45,38 @@ class Distribucion
         return $this;
     }
 
-    public function getMesas(): array
+    /**
+     * @return Collection<int, Posicionamiento>
+     */
+    public function getPosicionamientos(): Collection
     {
-        return $this->mesas;
+        return $this->posicionamientos;
     }
 
-    public function setMesas(array $mesas): self
+    public function addPosicionamiento(Posicionamiento $posicionamiento): self
     {
-        $this->mesas = $mesas;
+        if (!$this->posicionamientos->contains($posicionamiento)) {
+            $this->posicionamientos->add($posicionamiento);
+            $posicionamiento->setDistribucion($this);
+        }
 
         return $this;
+    }
+
+    public function removePosicionamiento(Posicionamiento $posicionamiento): self
+    {
+        if ($this->posicionamientos->removeElement($posicionamiento)) {
+            // set the owning side to null (unless already changed)
+            if ($posicionamiento->getDistribucion() === $this) {
+                $posicionamiento->setDistribucion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->id.' | '.$this->fecha->format('d/m/Y');
     }
 }

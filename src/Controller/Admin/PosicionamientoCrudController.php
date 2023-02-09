@@ -2,17 +2,17 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Distribucion;
+use App\Entity\Posicionamiento;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
-class DistribucionCrudController extends AbstractCrudController
+class PosicionamientoCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Distribucion::class;
+        return Posicionamiento::class;
     }
 
     public function configureFields(string $pageName): iterable
@@ -22,8 +22,10 @@ class DistribucionCrudController extends AbstractCrudController
             ->onlyOnIndex(),
             IdField::new('id')
             ->onlyOnDetail(),
-            DateField::new('fecha'),
-            AssociationField::new('posicionamientos')
+            AssociationField::new('distribucion'),
+            AssociationField::new('mesa'),
+            NumberField::new('posX'),
+            NumberField::new('posY'),
         ];
     }
 }

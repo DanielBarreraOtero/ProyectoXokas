@@ -6,6 +6,7 @@ use App\Entity\DiaFestivo;
 use App\Entity\Distribucion;
 use App\Entity\Juego;
 use App\Entity\Mesa;
+use App\Entity\Posicionamiento;
 use App\Entity\Reserva;
 use App\Entity\Tramo;
 use App\Entity\Usuario;
@@ -63,6 +64,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Tramos', 'fa fa-clock', Tramo::class);
         yield MenuItem::linkToCrud('DiasFestivos', 'fa fa-calendar', DiaFestivo::class);
         yield MenuItem::linkToCrud('Distribuciones', 'fa fa-inbox', Distribucion::class);
+        yield MenuItem::linkToCrud('Posicionamientos', 'fa fa-location-dot', Posicionamiento::class);
     }
 
     public function configureActions(): Actions
