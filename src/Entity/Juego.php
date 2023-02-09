@@ -42,6 +42,10 @@ class Juego implements JsonSerializable
     #[ORM\Column(length: 255)]
     private ?string $imagen = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $descripcion = null;
+
+
 
     public function __construct()
     {
@@ -204,6 +208,18 @@ class Juego implements JsonSerializable
     public function setImagen($imagen): self
     {
         $this->imagen = $imagen;
+
+        return $this;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion(string $descripcion): self
+    {
+        $this->descripcion = $descripcion;
 
         return $this;
     }

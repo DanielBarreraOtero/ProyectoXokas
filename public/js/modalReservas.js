@@ -42,7 +42,7 @@ async function actualizaModal(modal, idJuego) {
             // titulo
             $('#seleccionJuego .tituloJuegoSeleccionado').text(juego.nombre);
             // descripcion TODO:
-            // $('#seleccionJuego .descrpJuegoSeleccionado').text(juego.descripcion);
+            $('#seleccionJuego .descrpJuegoSeleccionado').text(juego.descripcion);
             // select de jugadores
             $('#seleccionJuego .tituloJuegoSeleccionado').text(juego.nombre);
             if (juego.maxJugadores !== juego.minJugadores) {

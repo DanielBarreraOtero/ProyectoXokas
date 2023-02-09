@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class JuegoCrudController extends AbstractCrudController
@@ -24,6 +25,11 @@ class JuegoCrudController extends AbstractCrudController
             IdField::new('id')
             ->onlyOnIndex(),
             TextField::new('nombre'),
+            TextareaField::new('descripcion')
+            ->onlyOnForms()
+            ->setMaxLength(255),
+            TextareaField::new('descripcion')
+            ->onlyOnDetail(),
             NumberField::new('anchoTablero'),
             NumberField::new('altoTablero'),
             NumberField::new('minJugadores'),

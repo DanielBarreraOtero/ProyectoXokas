@@ -37,6 +37,7 @@ class ApiJuegoController extends AbstractController
             $data['juegos'][] = [
                 'id' => $juego->getId(),
                 'nombre' => $juego->getNombre(),
+                'descripcion' => $juego->getDescripcion(),
                 'anchoTablero' => $juego->getAnchoTablero(),
                 'altoTablero' => $juego->getAltoTablero(),
                 'minJugadores' => $juego->getMinJugadores(),
