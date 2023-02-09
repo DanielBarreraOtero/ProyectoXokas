@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\DiaFestivo;
+use App\Entity\Distribucion;
 use App\Entity\Juego;
 use App\Entity\Mesa;
 use App\Entity\Reserva;
@@ -10,6 +11,7 @@ use App\Entity\Tramo;
 use App\Entity\Usuario;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -60,6 +62,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Reservas', 'fa fa-calendar-day', Reserva::class);
         yield MenuItem::linkToCrud('Tramos', 'fa fa-clock', Tramo::class);
         yield MenuItem::linkToCrud('DiasFestivos', 'fa fa-calendar', DiaFestivo::class);
+        yield MenuItem::linkToCrud('Distribuciones', 'fa fa-inbox', Distribucion::class);
     }
 
     public function configureActions(): Actions
