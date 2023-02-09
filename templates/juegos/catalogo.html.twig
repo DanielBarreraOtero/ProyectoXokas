@@ -28,7 +28,6 @@
 		{% else %}
 		{% set jugadores = juego.minJugadores ~ ' / ' ~ juego.maxJugadores %}
 
-
 		{% endif %}
 
 		<div class="col-lg-4 col-md-6 col-sm-6">
@@ -93,28 +92,33 @@
 							<div class="card-body">
 								{# Selección de juego #}
 								<div class="row">
-									<label for="selectJuegos" class="h5 ml-4 pt-2">Juego: </label>
-									<select name="selectJuegos" id="selectJuegos" class="col-3 ml-3"></select>
+									<label for="selectJuegos" class="h5 ml-4 pt-2">Juego:
+									</label>
+									<select name="selectJuegos" id="selectJuegos" class="col-3 ml-3 selectorJuego">
+										{% for juego in juegos %}
+										<option value="{{ juego.id }}">{{ juego.nombre }}</option>
+										{% endfor %}
+									</select>
 								</div>
 
 								{# detalles de juego #}
 								<div class="row">
 									<div class="col-6">
-										<img src="#" alt="imagen del juego">
+										<img src="#" class="mt-4" id="imgSeleccionJuego" alt="imagen del juego">
 									</div>
 
 									<div class="col-6">
 										<h4 class="tituloJuegoSeleccionado">Titulo</h4>
-										<p class="col-11">
+										<p class="col-11 descrpJuegoSeleccionado">
 											Descripción del juego
 										</p>
 										<div class="col-12 mt-4">
-											<p class="col-6 h8 p-0 font-weight-bold">Nº de jugadores: <span
-													class="font-weight-light ml-2">2 - 4</span></p>
-
-											{# TODO: Arreglar que no se ve en la misma row, no se le aplica la clase col al nice-select pero en el otro si #}
-											<select class="col-4 ml-2" name="selectNJugadores"
-												id="selectNJugadores"></select>
+											<p class="col-8 h8 p-0 font-weight-bold NJugSeleccionJuego">Nº de jugadores:
+												<span class="font-weight-light ml-2">2 - 4</span>
+											</p>
+											{# TODO: Arreglar que no se ve en la misma row, no se le aplica la clase col
+											al nice-select pero en el otro si #}
+											<select class="col-4 ml-2 selectNJugadores" name="selectNJugadores"></select>
 										</div>
 									</div>
 								</div>

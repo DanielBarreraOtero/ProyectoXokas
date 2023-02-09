@@ -41,6 +41,7 @@ class ApiJuegoController extends AbstractController
                 'altoTablero' => $juego->getAltoTablero(),
                 'minJugadores' => $juego->getMinJugadores(),
                 'maxJugadores' => $juego->getMaxJugadores(),
+                'imagen' => $juego->getImagen(),
                 'presentaciones' => $juego->getPresentaciones(),
                 'reservas' => $juego->getReservas()
             ];
