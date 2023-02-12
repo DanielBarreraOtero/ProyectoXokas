@@ -2059,9 +2059,19 @@ ol {
 
 #c-modalReservas .show .card-body {
   max-height: none;
-  height: 55vh;
+  height: 65vh;
 }
 
 #c-modalReservas .modal-footer {
   border: none;
+}
+
+#seleccionFinal .card-body {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+
+.nice-select {
+  float: none;
+  clear: none;
 }/*# sourceMappingURL=style.css.map */

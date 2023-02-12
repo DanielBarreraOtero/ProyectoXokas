@@ -11,6 +11,7 @@ $(function () {
 
         await actualizaModal(modal, idJuego);
 
+        $('#eldatepiker').datepicker();
         modal.modal('show');
 
     });

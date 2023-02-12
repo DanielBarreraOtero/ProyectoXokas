@@ -18,7 +18,6 @@
 	</div>
 	<div class="row">
 
-		{# TODO: Añadir boton de reservar y hacer modal de reservas #}
 		{# TODO: Si es admin no se muestra el catalogo en tarjetas, sino que se hace una tabla #}
 		{% for juego in juegos %}
 
@@ -75,6 +74,12 @@
 <div class="modal fade" id="c-modalReservas" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
+			<div class="modal-header align-baseline">
+				<h4 class="modal-title" id="exampleModalLongTitle">Hacer una Nueva Reserva</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="fa fa-x" aria-hidden="true"></span>
+				</button>
+			</div>
 			<div class="modal-body">
 				{# Acordeon #}
 				<div id="acordeonReservas">
@@ -87,7 +92,7 @@
 							</h4>
 						</header>
 
-						<section id="seleccionJuego" class="collapse show" aria-labelledby="headerSeleccionJuego"
+						<article id="seleccionJuego" class="collapse show" aria-labelledby="headerSeleccionJuego"
 							data-parent="#acordeonReservas">
 							<div class="card-body">
 								{# Selección de juego #}
@@ -118,23 +123,24 @@
 											</p>
 											{# TODO: Arreglar que no se ve en la misma row, no se le aplica la clase col
 											al nice-select pero en el otro si #}
-											<select class="col-4 ml-2 selectNJugadores" name="selectNJugadores"></select>
+											<select class="col-4 ml-2 selectNJugadores"
+												name="selectNJugadores"></select>
 										</div>
 									</div>
 								</div>
 							</div>
-						</section>
+						</article>
 					</div>
 
 					{# Escoge fecha y hora #}
-					<div class="card">
+					{# <div class="card">
 						<header class="card-header" id="headerSeleccionFecha" data-toggle="collapse"
 							data-target="#seleccionFecha" aria-expanded="false" aria-controls="seleccionFecha">
 							<h4 class="mb-0">
 								Selección de Fecha
 							</h4>
 						</header>
-						<section id="seleccionFecha" class="collapse" aria-labelledby="headerSeleccionFecha"
+						<article id="seleccionFecha" class="collapse" aria-labelledby="headerSeleccionFecha"
 							data-parent="#acordeonReservas">
 							<div class="card-body">
 								Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
@@ -145,8 +151,8 @@
 								butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth
 								nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
 							</div>
-						</section>
-					</div>
+						</article>
+					</div> #}
 
 					{# Escoge Mesa #}
 					<div class="card">
@@ -156,25 +162,34 @@
 								Selección de Mesa
 							</h4>
 						</header>
-						<section id="seleccionFinal" class="collapse" aria-labelledby="headerSeleccionFinal"
+						<article id="seleccionFinal" class="collapse" aria-labelledby="headerSeleccionFinal"
 							data-parent="#acordeonReservas">
 							<div class="card-body">
-								Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-								squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-								quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it
-								squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-								craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur
-								butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth
-								nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+								<section>
+									<h4 class="col-12">Juego</h4>
+									<select class="col-8" name="seleccionJuegoFinal" id="seleccionJuegoFinal"></select>
+									<select class="col-2" name="seleccionJugadoresFinal" id="seleccionJugadoresFinal"></select>
+									<h4 class="col-12">Fecha</h4>
+									<div class="col-12" id="eldatepiker"></div>
+									<h4 class="col-12">Hora</h4>
+									<h6>Inicio: </h6>
+									<h6>Fin: </h6>
+								</section>
+								<section>
+									<h4>Mesa</h4>
+									<div>
+										
+									</div>
+								</section>
 							</div>
-						</section>
+						</article>
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-				{# <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> #}
+			{# <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary">Save changes</button>
-			</div>
+			</div> #}
 		</div>
 	</div>
 </div>
