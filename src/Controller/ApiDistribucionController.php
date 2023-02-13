@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Distribucion;
+use App\Entity\Posicionamiento;
 use App\Repository\DistribucionRepository;
+use App\Repository\PosicionamientoRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +40,7 @@ class ApiDistribucionController extends AbstractController
             $data['distribuciones'][] = [
                 'id' => $distribucion->getId(),
                 'fecha' => $distribucion->getFecha(),
-                'mesas' => $distribucion->getMesas()
+                'posicionamientos' => $distribucion->getPosicionamientos()->toArray()
             ];
         }
 
@@ -49,33 +52,16 @@ class ApiDistribucionController extends AbstractController
     {
         $distribucion = json_decode($request->request->get('distribucion'));
 
-        // dd($distribucion);
-
         $newDistribucion = new Distribucion();
         $newDistribucion->setFecha(new DateTime($distribucion->fecha->date));
-        $newDistribucion->setMesas($distribucion->mesas);
 
         $repoDistri->save($newDistribucion, true);
 
         return $this->json(['ok' => true, 'distribucion' => $newDistribucion], 201);
     }
 
-    #[Route('/distribucion', name: 'putDistribucion', methods: 'PUT')]
-    public function putDistribucion(Request $request, DistribucionRepository $repoDistri): Response
-    {
-        $distribucion = json_decode($request->getContent())->distribucion;
-
-        $newDistribucion = $repoDistri->find($distribucion->id);
-        $newDistribucion->setFecha($distribucion->fecha);
-        $newDistribucion->setMesas($distribucion->mesas);
-
-        $repoDistri->save($newDistribucion);
-
-        return $this->json(['ok' => true, 'distribucion' => $newDistribucion], 200);
-    }
-
     #[Route('/distribucion', name: 'deleteDistribucion', methods: 'DELETE')]
-    public function deleteMesa(Request $request, DistribucionRepository $repoDistri): Response
+    public function deleteDistribucion(Request $request, DistribucionRepository $repoDistri): Response
     {
         $distribucion = json_decode($request->getContent())->distribucion;
 

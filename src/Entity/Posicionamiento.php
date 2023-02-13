@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\PosicionamientoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use stdClass;
 
 #[ORM\Entity(repositoryClass: PosicionamientoRepository::class)]
-class Posicionamiento
+class Posicionamiento implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -79,4 +81,17 @@ class Posicionamiento
 
         return $this;
     }
+
+    public function jsonSerialize(): mixed
+    {
+        $std = new stdClass();
+
+        $std->id = $this->getId();
+        $std->mesa_id = $this->getMesa()->getId();
+        $std->distribucion_id = $this->getDistribucion()->getId();
+        $std->posX = $this->getPosX();
+        $std->posY = $this->getPosY();
+
+        return $std;
+    }    
 }

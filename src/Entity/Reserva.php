@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use stdClass;
 
 #[ORM\Entity(repositoryClass: ReservaRepository::class)]
-class Reserva
+class Reserva implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -144,5 +146,20 @@ class Reserva
         $this->fechaCancelacion = $fechaCancelacion;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        $std = new stdClass();
+
+        $std->id = $this->getId();
+        $std->mesa_id = $this->getMesa()->getId();
+        $std->juego_id = $this->getJuegos()->getId();
+        $std->usuario_id = $this->getUsuario()->getId();
+        $std->asiste = $this->isAsiste();
+        $std->fecha = $this->getFecha();
+        $std->fecha_cancelacion = $this->getFechaCancelacion();
+
+        return $std;
     }
 }

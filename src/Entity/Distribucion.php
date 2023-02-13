@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use stdClass;
 
 #[ORM\Entity(repositoryClass: DistribucionRepository::class)]
-class Distribucion
+class Distribucion implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -53,6 +55,11 @@ class Distribucion
         return $this->posicionamientos;
     }
 
+    public function setPosicionamientos(ArrayCollection $posicionamientos)
+    {
+        $this->posicionamientos = $posicionamientos;
+    }
+
     public function addPosicionamiento(Posicionamiento $posicionamiento): self
     {
         if (!$this->posicionamientos->contains($posicionamiento)) {
@@ -78,5 +85,16 @@ class Distribucion
     public function __toString()
     {
         return $this->id.' | '.$this->fecha->format('d/m/Y');
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        $std = new stdClass();
+
+        $std->id = $this->getId();
+        $std->fecha = $this->getFecha();
+        $std->posicionamientos = $this->getPosicionamientos();
+
+        return $std;
     }
 }
