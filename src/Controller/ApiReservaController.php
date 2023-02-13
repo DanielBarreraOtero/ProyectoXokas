@@ -46,6 +46,7 @@ class ApiReservaController extends AbstractController
                 'usuario_id' => $reserva->getUsuario()->getId(),
                 'asiste' => $reserva->isAsiste(),
                 'fecha' => $reserva->getFecha(),
+                'tramo' => $reserva->getTramo(),
                 'fecha_cancelacion' => $reserva->getFechaCancelacion()
             ];
         }
@@ -64,27 +65,30 @@ class ApiReservaController extends AbstractController
         $newReserva->setUsuario($manager->getRepository(Usuario::class)->find($reserva->usuario_id));
         $newReserva->setJuegos($manager->getRepository(Juego::class)->find($reserva->juego_id));
         $newReserva->setFecha(new DateTime($reserva->fecha->date));
+        $newReserva->setTramo($manager->getRepository(Tramo::class)->find($reserva->tramo_id));
         $newReserva->setAsiste(true);
-
+        
         $manager->persist($newReserva);
         $manager->flush();
-
+        
         return $this->json(['ok' => true, 'reserva' => $newReserva], 201);
     }
-
+    
     #[Route('/reserva', name: 'putReserva', methods: 'PUT')]
     public function putReserva(Request $request, ManagerRegistry $doctrine, ReservaRepository $repoReser): Response
     {
         $manager = $doctrine->getManager();
-
+        
         $reserva = json_decode($request->getContent())->reserva;
-
+        
         $newReserva = $repoReser->find($reserva->id);
-
+        
         $newReserva->setMesa($manager->getRepository(Mesa::class)->find($reserva->mesa_id));
         $newReserva->setUsuario($manager->getRepository(Usuario::class)->find($reserva->usuario_id));
         $newReserva->setJuegos($manager->getRepository(Juego::class)->find($reserva->juego_id));
+        $newReserva->setTramo($manager->getRepository(Tramo::class)->find($reserva->tramo_id));
         $newReserva->setFecha(new DateTime($reserva->fecha->date));
+        
         if (isset($reserva->fecha_cancelacion) && $reserva->fecha_cancelacion !== null) {
             $newReserva->setFechaCancelacion(new DateTime($reserva->fecha_cancelacion->date));
         }

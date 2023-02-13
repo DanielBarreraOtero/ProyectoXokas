@@ -25,18 +25,18 @@ class Evento
     #[ORM\Column(length: 255)]
     private ?string $nombre = null;
 
-    #[ORM\ManyToMany(targetEntity: Tramo::class)]
-    private Collection $Tramos;
-
     #[ORM\OneToMany(mappedBy: 'evento', targetEntity: Presentacion::class)]
     private Collection $presentaciones;
 
     #[ORM\OneToMany(mappedBy: 'evento', targetEntity: Invitacion::class)]
     private Collection $invitaciones;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tramo $tramo = null;
+
     public function __construct()
     {
-        $this->Tramos = new ArrayCollection();
         $this->presentaciones = new ArrayCollection();
         $this->invitaciones = new ArrayCollection();
     }
@@ -82,29 +82,6 @@ class Evento
         return $this;
     }
 
-    /**
-     * @return Collection<int, Tramo>
-     */
-    public function getTramos(): Collection
-    {
-        return $this->Tramos;
-    }
-
-    public function addTramo(Tramo $tramo): self
-    {
-        if (!$this->Tramos->contains($tramo)) {
-            $this->Tramos->add($tramo);
-        }
-
-        return $this;
-    }
-
-    public function removeTramo(Tramo $tramo): self
-    {
-        $this->Tramos->removeElement($tramo);
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Presentacion>
@@ -162,6 +139,18 @@ class Evento
                 $invitacione->setEvento(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTramo(): ?Tramo
+    {
+        return $this->tramo;
+    }
+
+    public function setTramo(?Tramo $tramo): self
+    {
+        $this->tramo = $tramo;
 
         return $this;
     }

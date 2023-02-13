@@ -151,6 +151,6 @@ class Mesa implements JsonSerializable
 
     public function __toString()
     {
-        return $this->id;
+        return $this->id.' | '.$this->alto.' x '.$this->ancho.' cm';
     }
 }

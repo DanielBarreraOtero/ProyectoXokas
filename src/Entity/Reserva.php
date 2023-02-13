@@ -24,9 +24,6 @@ class Reserva implements JsonSerializable
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha = null;
 
-    #[ORM\ManyToMany(targetEntity: Tramo::class)]
-    private Collection $tramos;
-
     #[ORM\ManyToOne(inversedBy: 'reservas')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Mesa $mesa = null;
@@ -42,10 +39,10 @@ class Reserva implements JsonSerializable
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $fechaCancelacion = null;
 
-    public function __construct()
-    {
-        $this->tramos = new ArrayCollection();
-    }
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tramo $tramo = null;
+
 
     public function getId(): ?int
     {
@@ -72,30 +69,6 @@ class Reserva implements JsonSerializable
     public function setFecha(\DateTimeInterface $fecha): self
     {
         $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Tramo>
-     */
-    public function getTramos(): Collection
-    {
-        return $this->tramos;
-    }
-
-    public function addTramo(Tramo $tramo): self
-    {
-        if (!$this->tramos->contains($tramo)) {
-            $this->tramos->add($tramo);
-        }
-
-        return $this;
-    }
-
-    public function removeTramo(Tramo $tramo): self
-    {
-        $this->tramos->removeElement($tramo);
 
         return $this;
     }
@@ -161,5 +134,17 @@ class Reserva implements JsonSerializable
         $std->fecha_cancelacion = $this->getFechaCancelacion();
 
         return $std;
+    }
+
+    public function getTramo(): ?Tramo
+    {
+        return $this->tramo;
+    }
+
+    public function setTramo(?Tramo $tramo): self
+    {
+        $this->tramo = $tramo;
+
+        return $this;
     }
 }

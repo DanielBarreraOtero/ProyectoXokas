@@ -24,12 +24,7 @@ class ReservaCrudController extends AbstractCrudController
             ->onlyOnIndex(),
             BooleanField::new('asiste'),
             DateField::new('fecha'),
-            AssociationField::new('tramos')
-            ->onlyOnForms(),
-            ArrayField::new('tramos')
-            ->onlyOnDetail(),
-            ArrayField::new('tramos')
-            ->onlyOnIndex(),
+            AssociationField::new('tramo'),
             AssociationField::new('mesa'),
             AssociationField::new('juegos'),
             AssociationField::new('usuario'),
