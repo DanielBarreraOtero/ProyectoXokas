@@ -1717,6 +1717,33 @@ ol {
   top: 14px;
 }
 
+.c-tabla-juegos {
+  border-collapse: collapse;
+}
+.c-tabla-juegos tr {
+  text-align: center;
+}
+.c-tabla-juegos thead th {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.c-tabla-juegos tbody tr {
+  border-bottom: 1px solid lightgray;
+}
+.c-tabla-juegos tbody tr .descripcion {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 35vw;
+}
+.c-tabla-juegos tbody tr td {
+  padding: 15px 5px 5px 5px;
+}
+.c-tabla-juegos tbody tr td:last-child div {
+  display: flex;
+  justify-content: space-around;
+}
+
 /*---------------------
   Sign Up
 -----------------------*/
@@ -1820,7 +1847,7 @@ ol {
 }
 @media only screen and (min-width: 1200px) {
   .container {
-    max-width: 1170px;
+    max-width: 85vw;
   }
 }
 /* Medium Device = 1200px */

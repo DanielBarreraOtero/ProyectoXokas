@@ -189,6 +189,7 @@ class Juego implements JsonSerializable
         $std->minJugadores = $this->getMinJugadores();
         $std->maxJugadores = $this->getMaxJugadores();
         $std->imagen = $this->getImagen();
+        $std->descripcion = $this->getDescripcion();
         $std->presentaciones = $this->getPresentaciones();
         $std->reservas = $this->getReservas();
 
