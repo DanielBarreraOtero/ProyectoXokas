@@ -41,8 +41,11 @@ class Reserva implements JsonSerializable
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Tramo $tramo = null;
+    private ?Tramo $tramoInicio = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tramo $tramoFin = null;
 
     public function getId(): ?int
     {
@@ -131,19 +134,33 @@ class Reserva implements JsonSerializable
         $std->usuario_id = $this->getUsuario()->getId();
         $std->asiste = $this->isAsiste();
         $std->fecha = $this->getFecha();
+        $std->tramo_inicio_id = $this->getTramoInicio()->getId();
+        $std->tramo_fin_id = $this->getTramoFin()->getId();
         $std->fecha_cancelacion = $this->getFechaCancelacion();
 
         return $std;
     }
 
-    public function getTramo(): ?Tramo
+    public function getTramoInicio(): ?Tramo
     {
-        return $this->tramo;
+        return $this->tramoInicio;
     }
 
-    public function setTramo(?Tramo $tramo): self
+    public function setTramoInicio(?Tramo $tramoInicio): self
     {
-        $this->tramo = $tramo;
+        $this->tramoInicio = $tramoInicio;
+
+        return $this;
+    }
+
+    public function getTramoFin(): ?Tramo
+    {
+        return $this->tramoFin;
+    }
+
+    public function setTramoFin(?Tramo $tramoFin): self
+    {
+        $this->tramoFin = $tramoFin;
 
         return $this;
     }

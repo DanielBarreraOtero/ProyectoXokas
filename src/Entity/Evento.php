@@ -33,7 +33,11 @@ class Evento
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Tramo $tramo = null;
+    private ?Tramo $tramoInicio = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tramo $tramoFin = null;
 
     public function __construct()
     {
@@ -143,14 +147,26 @@ class Evento
         return $this;
     }
 
-    public function getTramo(): ?Tramo
+    public function getTramoInicio(): ?Tramo
     {
-        return $this->tramo;
+        return $this->tramoInicio;
     }
 
-    public function setTramo(?Tramo $tramo): self
+    public function setTramoInicio(?Tramo $tramoInicio): self
     {
-        $this->tramo = $tramo;
+        $this->tramoInicio = $tramoInicio;
+
+        return $this;
+    }
+
+    public function getTramoFin(): ?Tramo
+    {
+        return $this->tramoFin;
+    }
+
+    public function setTramoFin(?Tramo $tramoFin): self
+    {
+        $this->tramoFin = $tramoFin;
 
         return $this;
     }
