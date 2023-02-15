@@ -1,92 +1,89 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	{# 
-				<pre>
-			    {{ dump(registrationForm) }}
-				</pre> #}
-
-	{# banner #}
-		<section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg"> <div class="container">
-			<div class="row">
-				<div class="col-lg-12 text-center">
-					<div class="normal__breadcrumb__text">
-						<h2>registro</h2>
-						<p>Bienvenido a la página oficial de XoKaSyCIA</p>
-					</div>
+{# banner #}
+<section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<div class="normal__breadcrumb__text">
+					<h2>registro</h2>
+					<p>Bienvenido a la página oficial de XoKaSyCIA</p>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	{# {{ form_start(registrationForm) }}
-					{{form_label(registrationForm.email) }}
-					{{ form_widget(registrationForm.email) }}
-					 {{ form_row(registrationForm.email) }}
-					{{ form_row(registrationForm.plainPassword, {
-				            label: 'Password'
-				        }) }}
-					{{ form_row(registrationForm.agreeTerms) }}
-				
-					<button type="submit" class="btn">Register</button>
-					{{ form_end(registrationForm) }} #}
+<!-- Register Section Begin -->
+<section class="c-register spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="c-register__form row">
+					{# titulo #}
+					<h3 class="col-12">Registro</h3>
 
-	<!-- Login Section Begin -->
-	<section class="login spad">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8">
-					<div
-						class="login__form">
-						{# titulo #}
-						<h3>Registro</h3>
+					{# formulario #}
+					{{ form_start(registrationForm, { 'attr': {'class': 'col-12 row'}}) }}
 
-						{# TODO: Hacer estilos para el formulario #}
+					<div class="input__item col-6">
+						{{ form_label(registrationForm.email) }}
+						{{ form_widget(registrationForm.email) }}
+						{{ form_errors(registrationForm.email) }}
+					</div>
 
-						{# formulario #}
-						{{ form_start(registrationForm) }}
+					<div class="input__item col-6">
+						{{ form_label(registrationForm.nombre) }}
+						{{ form_widget(registrationForm.nombre) }}
+						{{ form_errors(registrationForm.nombre) }}
+					</div>
 
-						<div class="input__item">
-							{{form_label(registrationForm.email) }}
-							{{ form_widget(registrationForm.email) }}
-						</div>
+					<div class="input__item col-6">
+						{{ form_label(registrationForm.ap1, 'Primer Apellido') }}
+						{{ form_widget(registrationForm.ap1) }}
+						{{ form_errors(registrationForm.ap1) }}
+					</div>
 
-						{# {{ form_row(registrationForm.email) }} #}
-						{{ form_row(registrationForm.plainPassword, {label: 'Password'}) }}
-						{{ form_row(registrationForm.agreeTerms) }}
+					<div class="input__item col-6">
+						{{ form_label(registrationForm.ap2, 'Segundo Apellido') }}
+						{{ form_widget(registrationForm.ap2) }}
+						{{ form_errors(registrationForm.ap2) }}
+					</div>
 
+					<div class="input__item col-6">
+						{{ form_label(registrationForm.password.first) }}
+						{{ form_widget(registrationForm.password.first) }}
+						{{ form_errors(registrationForm.password.first) }}
+					</div>
+
+					<div class="input__item col-6">
+						{{ form_label(registrationForm.password.second) }}
+						{{ form_widget(registrationForm.password.second) }}
+						{{ form_errors(registrationForm.password.second) }}
+					</div>
+
+					<div class="input__item col-6">
+						{{ form_label(registrationForm.tlf, 'Teléfono') }}
+						{{ form_widget(registrationForm.tlf) }}
+						{{ form_errors(registrationForm.tlf) }}
+					</div>
+
+					<div class="col-12">
 						<button type="submit" class="site-btn">Registrar</button>
-						{{ form_end(registrationForm) }}
-
-
-					{# <form action="{{ path('app_login') }}" method="post">
-																																	<div class="input__item">
-																																		<input type="email" placeholder="Email address" id="username" name="_username" value="{{ last_username }}">
-																																		<span class="icon_mail"></span>
-																																	</div>
-																																	<div class="input__item">
-																																		<input type="password" placeholder="Password" id="password" name="_password">
-																																		<span class="icon_lock"></span>
-																																	</div>
-																										
-																																	<input type="hidden" name="_target_path" value="/">
-																																	<button type="submit" class="site-btn">Login</button>
-																																</form>
-																										
-																																{# btn olvido su contraseña #}
-						{# <a href="#" class="forget_pass">¿Olvidó su contraseña?</a> #}
 					</div>
+					{{ form_end(registrationForm) }}
 				</div>
-				<div
-					class="col-lg-4">
-					{# enlace a registro #}
-					<div class="login__register">
-						<h3>¿Ya tiene cuenta?</h3>
-						<a href="{{ url('app_login') }}" class="primary-btn">Inicie sesión</a>
-					</div>
+			</div>
+			<div class="col-lg-4">
+				{# enlace a login #}
+				<div class="c-register__login-cont">
+					<h3>¿Ya tiene cuenta?</h3>
+					<a href="{{ url('app_login') }}" class="primary-btn">Inicie sesión</a>
 				</div>
 			</div>
 		</div>
-	</section>
-	<!-- Login Section End -->
+	</div>
+</section>
+<!-- Register Section End -->
 {% endblock %}

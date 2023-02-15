@@ -1613,6 +1613,111 @@ ol {
 }
 
 /*---------------------
+  Register
+-----------------------*/
+.c-register {
+  padding-top: 130px;
+  padding-bottom: 120px;
+}
+.c-register__form {
+  position: relative;
+}
+.c-register__form:after {
+  position: absolute;
+  right: -14px;
+  top: -40px;
+  height: 330px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  content: "";
+}
+.c-register__form h3 {
+  color: #ffffff;
+  font-weight: 700;
+  font-family: "Oswald", sans-serif;
+  margin-bottom: 30px;
+}
+.c-register__form form .input__item {
+  position: relative;
+  margin-bottom: 20px;
+}
+.c-register__form form .input__item input {
+  height: 35px;
+  width: 100%;
+  font-size: 15px;
+  color: #b7b7b7;
+  background: #ffffff;
+  border: none;
+  padding-left: 15px;
+}
+.c-register__form form button {
+  border-radius: 0;
+  margin-top: 10px;
+}
+.c-register__login-cont {
+  padding-left: 30px;
+}
+.c-register__login-cont h3 {
+  color: #ffffff;
+  font-weight: 700;
+  font-family: "Oswald", sans-serif;
+  margin-bottom: 30px;
+}
+.c-register__login-cont .primary-btn {
+  background: #e53637;
+  padding: 12px 42px;
+}
+.c-register__social {
+  padding-top: 52px;
+}
+.c-register__social__links {
+  text-align: center;
+}
+.c-register__social__links span {
+  color: #ffffff;
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+.c-register__social__links ul li {
+  list-style: none;
+  margin-bottom: 15px;
+}
+.c-register__social__links ul li:last-child {
+  margin-bottom: 0;
+}
+.c-register__social__links ul li a {
+  color: #ffffff;
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  width: 460px;
+  padding: 14px 0;
+  position: relative;
+  margin: 0 auto;
+}
+.c-register__social__links ul li a.facebook {
+  background: #4267b2;
+}
+.c-register__social__links ul li a.google {
+  background: #ff4343;
+}
+.c-register__social__links ul li a.twitter {
+  background: #1da1f2;
+}
+.c-register__social__links ul li a i {
+  font-size: 20px;
+  position: absolute;
+  left: 32px;
+  top: 14px;
+}
+
+/*---------------------
   Sign Up
 -----------------------*/
 .signup {
