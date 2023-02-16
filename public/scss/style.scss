@@ -1,6 +1,7 @@
 @import "variable";
 @import "mixins";
 
+@import 'c-cuerpo';
 @import "base";
 @import "header";
 @import "hero";
@@ -13,6 +14,7 @@
 @import "login";
 @import "c-register";
 @import "c-tabla-juegos";
+@import "c-formu-juego";
 @import "signup";
 @import "footer";
 @import "responsive";

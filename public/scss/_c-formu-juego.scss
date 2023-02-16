@@ -1,0 +1,12 @@
+.c-formu-juego {
+
+        &:after {
+            position: absolute;
+            right: 52%;
+            top: -20px;
+            height: 100%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            content: "";
+        }
+}

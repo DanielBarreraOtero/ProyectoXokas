@@ -18,46 +18,49 @@
 			</div>
 		</div>
 	</section>
-	
-	<!-- Login Section Begin -->
-	<section class="login spad">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					<div
-						class="login__form">
-						{# titulo #}
-						<h3>Login</h3>
+	<section
+		class="c-cuerpo">
 
-						{# formulario #}
-						<form action="{{ path('app_login') }}" method="post">
-							<div class="input__item">
-								<input type="email" placeholder="Email address" id="username" name="_username" value="{{ last_username }}">
-								<span class="icon_mail"></span>
-							</div>
-							<div class="input__item">
-								<input type="password" placeholder="Password" id="password" name="_password">
-								<span class="icon_lock"></span>
-							</div>
+		<!-- Login Section Begin -->
+		<section class="login spad">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6">
+						<div
+							class="login__form">
+							{# titulo #}
+							<h3>Login</h3>
 
-							<input type="hidden" name="_target_path" value="/">
-							<button type="submit" class="site-btn">Login</button>
-						</form>
+							{# formulario #}
+							<form action="{{ path('app_login') }}" method="post">
+								<div class="input__item">
+									<input type="email" placeholder="Email address" id="username" name="_username" value="{{ last_username }}">
+									<span class="icon_mail"></span>
+								</div>
+								<div class="input__item">
+									<input type="password" placeholder="Password" id="password" name="_password">
+									<span class="icon_lock"></span>
+								</div>
 
-						{# btn olvido su contraseña #}
-						<a href="#" class="forget_pass">¿Olvidó su contraseña?</a>
+								<input type="hidden" name="_target_path" value="/">
+								<button type="submit" class="site-btn">Login</button>
+							</form>
+
+							{# btn olvido su contraseña #}
+							<a href="#" class="forget_pass">¿Olvidó su contraseña?</a>
+						</div>
 					</div>
-				</div>
-				<div
-					class="col-lg-6">
-					{# enlace a registro #}
-					<div class="login__register">
-						<h3>¿No tiene cuenta?</h3>
-						<a href="{{ url('app_register') }}" class="primary-btn">Registrese ahora</a>
+					<div
+						class="col-lg-6">
+						{# enlace a registro #}
+						<div class="login__register">
+							<h3>¿No tiene cuenta?</h3>
+							<a href="{{ url('app_register') }}" class="primary-btn">Registrese ahora</a>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
+		<!-- Login Section End -->
 	</section>
-	<!-- Login Section End -->
 {% endblock %}

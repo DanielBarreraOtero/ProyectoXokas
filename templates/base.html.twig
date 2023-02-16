@@ -1,108 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>
-			{% block title %}XOKASyCIA
-			{% endblock %}
-		</title>
-		<link
-		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
 
-			<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-			<link
-			href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-			<!-- Css Styles -->
-			<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-			<link rel="stylesheet" href="css/jquery-ui.css" type="text/css">
-			<link rel="stylesheet" href="css/jquery-ui.structure.css" type="text/css">
-			<link rel="stylesheet" href="css/jquery-ui.theme.css" type="text/css">
-			<link rel="stylesheet" href="css/font-awesome.css" type="text/css">
-			<link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-			<link rel="stylesheet" href="css/plyr.css" type="text/css">
-			<link rel="stylesheet" href="css/nice-select.css" type="text/css">
-			<link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-			<link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-			<link rel="stylesheet" href="css/style.css" type="text/css">
-
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>
+		{% block title %}XOKASyCIA
 		{% endblock %}
+	</title>
+	<link rel="icon"
+		href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+	{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+	{% block stylesheets %}
+	{{ encore_entry_link_tags('app') }}
 
-		<script src="js/jquery-3.3.1.min.js"></script>
-		<script src="js/jquery-ui.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/font-awesome.js"></script>
-		<script src="js/player.js"></script>
-		<script src="js/jquery.nice-select.min.js"></script>
-		<script src="js/mixitup.min.js"></script>
-		<script src="js/jquery.slicknav.js"></script>
-		<script src="js/owl.carousel.min.js"></script>
-		<script src="js/main.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
+		rel="stylesheet">
 
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
+	<!-- Css Styles -->
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="css/jquery-ui.css" type="text/css">
+	<link rel="stylesheet" href="css/jquery-ui.structure.css" type="text/css">
+	<link rel="stylesheet" href="css/jquery-ui.theme.css" type="text/css">
+	<link rel="stylesheet" href="css/font-awesome.css" type="text/css">
+	<link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+	<link rel="stylesheet" href="css/plyr.css" type="text/css">
+	<link rel="stylesheet" href="css/nice-select.css" type="text/css">
+	<link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+	<link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+	<link rel="stylesheet" href="css/style.css" type="text/css">
 
-		{% endblock %}
+	{% endblock %}
 
-		<style>
-			body {
-				color: white;
-			}
-		</style>
-	</head>
-	<body>
-		{% block preloader %}
-			<!-- Page Preloder -->
-			<div id="preloder">
-				<div class="loader"></div>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/font-awesome.js"></script>
+	<script src="js/player.js"></script>
+	<script src="js/jquery.nice-select.min.js"></script>
+	<script src="js/mixitup.min.js"></script>
+	<script src="js/jquery.slicknav.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/main.js"></script>
+
+	{% block javascripts %}
+	{{ encore_entry_script_tags('app') }}
+
+	{% endblock %}
+
+	<style>
+		body {
+			color: white;
+		}
+	</style>
+</head>
+
+<body>
+	{% block preloader %}
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+	{% endblock %}
+
+	{# HEADER #}
+	{% block header %}
+	{% include "header.html.twig" %}
+	{% endblock %}
+
+	{# asociamos el rol en una variable para tener acceso mas simple a el #}
+	{% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+	{% set role = 'admin' %}
+
+	{% elseif app.user %}
+	{% set role = 'socio' %}
+
+	{% else %}
+	{% set role = 'usuario' %}
+
+	{% endif %}
+
+	{# CONTENIDO #}
+	{% block body %}
+
+	{% endblock %}
+
+	{# FOOTER #}
+	{% block footer %}
+	{% include "footer.html.twig" %}
+	{% endblock %}
+
+	{% block search %}
+	<!-- Search model Begin -->
+	<div class="search-model">
+		<div class="h-100 d-flex align-items-center justify-content-center">
+			<div class="search-close-switch">
+				<i class="icon_close"></i>
 			</div>
-		{% endblock %}
+			<form class="search-model-form">
+				<input type="text" id="search-input" placeholder="Search here.....">
+			</form>
+		</div>
+	</div>
+	<!-- Search model end -->
+	{% endblock %}
+</body>
 
-		{# HEADER #}
-		{% block header %}
-			{% include "header.html.twig" %}
-		{% endblock %}
-
-		{# asociamos el rol en una variable para tener acceso mas simple a el #}
-		{% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-			{% set role = 'admin' %}
-
-		{% elseif app.user %}
-			{% set role = 'socio' %}
-
-		{% else %}
-			{% set role = 'usuario' %}
-
-		{% endif %}
-
-		{# CONTENIDO #}
-		{% block body %}
-			
-		{% endblock %}
-
-		{# FOOTER #}
-		{% block footer %}
-			{% include "footer.html.twig" %}
-		{% endblock %}
-
-		{% block search %}
-			<!-- Search model Begin -->
-			<div class="search-model">
-				<div class="h-100 d-flex align-items-center justify-content-center">
-					<div class="search-close-switch">
-						<i class="icon_close"></i>
-					</div>
-					<form class="search-model-form">
-						<input type="text" id="search-input" placeholder="Search here.....">
-					</form>
-				</div>
-			</div>
-			<!-- Search model end -->
-		{% endblock %}
-	</body>
 </html>

@@ -2,7 +2,7 @@
   Register
 -----------------------*/
 .c-register {
-    padding-top: 130px;
+    padding-top: 70px;
     padding-bottom: 120px;
 
     &__form {
@@ -11,8 +11,8 @@
         &:after {
             position: absolute;
             right: -14px;
-            top: -40px;
-            height: 330px;
+            top: -20px;
+            height: 100%;
             width: 1px;
             background: rgba(255, 255, 255, 0.2);
             content: "";
