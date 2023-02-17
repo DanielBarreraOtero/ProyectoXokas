@@ -12,15 +12,23 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        $data = [];
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
+
+        if ($error) {
+            $data['error'] = true;
+            $data['mensajeError'] = 'El correo o la contraseña no son correctos';
+        } else {
+            $data['error'] = false;
+        }
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('login/index.html.twig', [
-            'last_username' => $lastUsername,
-            'error'         => $error,
-        ]);
+        $data['last_username'] = $lastUsername;
+
+        return $this->render('login/index.html.twig', $data);
     }
 }

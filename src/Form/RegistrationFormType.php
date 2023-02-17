@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -21,13 +22,37 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('nombre')
-            ->add('ap1')
-            ->add('ap2',TextType::class, [
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Por favor, introduzca un email',
+                    ]),
+                ],
+            ])
+            ->add('nombre', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Por favor, introduzca su nombre',
+                    ]),
+                ],
+            ])
+            ->add('ap1', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Por favor, introduzca su apellido',
+                    ]),
+                ],
+            ])
+            ->add('ap2', TextType::class, [
                 'required' => false
             ])
-            ->add('tlf')
+            ->add('tlf', NumberType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Por favor, introduzca su número de teléfono',
+                    ]),
+                ],
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Las contraseñas deben coincidir.',
@@ -45,8 +70,7 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-            ->add('tlf', NumberType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

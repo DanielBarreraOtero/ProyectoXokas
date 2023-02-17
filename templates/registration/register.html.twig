@@ -2,7 +2,7 @@
 
 {% block body %}
 	{# banner #}
-	<section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+	<section class="normal-breadcrumb set-bg" data-setbg="{{ asset('img/normal-breadcrumb.jpg') }}">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
@@ -31,43 +31,43 @@
 
 							<div class="input__item col-6">
 								{{ form_label(registrationForm.email) }}
-								{{ form_widget(registrationForm.email) }}
+								{{ form_widget(registrationForm.email, { 'required': false}) }}
 								{{ form_errors(registrationForm.email) }}
 							</div>
 
 							<div class="input__item col-6">
 								{{ form_label(registrationForm.nombre) }}
-								{{ form_widget(registrationForm.nombre) }}
+								{{ form_widget(registrationForm.nombre, { 'required': false}) }}
 								{{ form_errors(registrationForm.nombre) }}
 							</div>
 
 							<div class="input__item col-6">
 								{{ form_label(registrationForm.ap1, 'Primer Apellido') }}
-								{{ form_widget(registrationForm.ap1) }}
+								{{ form_widget(registrationForm.ap1, { 'required': false}) }}
 								{{ form_errors(registrationForm.ap1) }}
 							</div>
 
 							<div class="input__item col-6">
 								{{ form_label(registrationForm.ap2, 'Segundo Apellido') }}
-								{{ form_widget(registrationForm.ap2) }}
+								{{ form_widget(registrationForm.ap2, { 'required': false}) }}
 								{{ form_errors(registrationForm.ap2) }}
 							</div>
 
 							<div class="input__item col-6">
 								{{ form_label(registrationForm.password.first) }}
-								{{ form_widget(registrationForm.password.first) }}
+								{{ form_widget(registrationForm.password.first, { 'required': false}) }}
 								{{ form_errors(registrationForm.password.first) }}
 							</div>
 
 							<div class="input__item col-6">
 								{{ form_label(registrationForm.password.second) }}
-								{{ form_widget(registrationForm.password.second) }}
+								{{ form_widget(registrationForm.password.second, { 'required': false}) }}
 								{{ form_errors(registrationForm.password.second) }}
 							</div>
 
 							<div class="input__item col-6">
 								{{ form_label(registrationForm.tlf, 'Teléfono') }}
-								{{ form_widget(registrationForm.tlf) }}
+								{{ form_widget(registrationForm.tlf, { 'required': false}) }}
 								{{ form_errors(registrationForm.tlf) }}
 							</div>
 

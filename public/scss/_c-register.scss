@@ -32,37 +32,23 @@
                 // width: 370px;
                 margin-bottom: 20px;
 
-                // &:before {
-                //     position: absolute;
-                //     left: 50px;
-                //     top: 10px;
-                //     height: 30px;
-                //     width: 1px;
-                //     background: #b7b7b7;
-                //     content: "";
-                // }
-
                 input {
                     height: 35px;
                     width: 100%;
                     font-size: 15px;
-                    color: #b7b7b7;
+                    color: #686868;
                     background: $white-color;
                     border: none;
                     padding-left: 15px;
 
-                    // &::placeholder {
-                    //     color: #b7b7b7;
-                    // }
                 }
 
-                // span {
-                //     color: #b7b7b7;
-                //     font-size: 20px;
-                //     position: absolute;
-                //     left: 15px;
-                //     top: 13px;
-                // }
+                ul {
+                    list-style-type: none;
+                    margin-left: 10px;
+                    color: #ff4343;
+                }
+               
             }
 
             button {

@@ -2,13 +2,18 @@
 
 {% block body %}
 {# banner #}
-<section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+<section class="normal-breadcrumb set-bg" data-setbg="{{ asset('img/normal-breadcrumb.jpg') }}">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="normal__breadcrumb__text">
+                    {% if juego.id is not null %}
+                    <h2>Editar Juego</h2>
+                    <p>Inserte los datos en el formulario para editar el juego</p>
+                    {% else %}
                     <h2>Nuevo Juego</h2>
                     <p>Inserte los datos en el formulario para crear un nuevo juego</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -17,56 +22,73 @@
 
 <section class="c-cuerpo">
 
-    <div class="container">
+    <div class="container mt-5">
         <div class="row justify-content-center">
             {{ form_start(formuJuego, { 'attr': {'class': 'col-10 row c-formu-juego '}}) }}
 
-            <div class="input__item col-6">
-                {{ form_label(formuJuego.nombre) }}
-                {{ form_widget(formuJuego.nombre) }}
-                {{ form_errors(formuJuego.nombre) }}
-            </div>
-
-            <div class="input__item col-6 row">
-                {{ form_label(formuJuego.descripcion, 'Descripción', { 'label_attr': {'class': 'col-3'}}) }}
-                {{ form_widget(formuJuego.descripcion, { 'attr': {'class': 'col-9'}}) }}
-                {{ form_errors(formuJuego.descripcion, { 'attr': {'class': 'col-12'}}) }}
-            </div>
-
-            <div class="col-6 mt-4">
-                <div class="input__item col-12 row align-items-baseline">
-                    <p class="col-3 h6 p-0 text-light">Jugadores:</p>
-                    {{ form_label(formuJuego.altoTablero, 'Desde:', { 'label_attr': {'class': 'pr-1'}}) }}
-                    {{ form_widget(formuJuego.minJugadores, { 'attr': {'class': 'col-2'}}) }}
-
-                    {{ form_label(formuJuego.altoTablero, 'Hasta:', { 'label_attr': {'class': 'pr-1 pl-2'}}) }}
-                    {{ form_widget(formuJuego.maxJugadores, { 'attr': {'class': 'col-2'}}) }}
-
-                    {{ form_errors(formuJuego.minJugadores, { 'attr': {'class': 'col-12'}}) }}
-                    {{ form_errors(formuJuego.maxJugadores, { 'attr': {'class': 'col-12'}}) }}
+            {# bloque nombre, jugadores, dimensiones #}
+            <div class="col-4 offset-2 row">
+                <div class="input__item col-12">
+                    {{ form_label(formuJuego.nombre, 'Nombre', { 'label_attr': {'class': 'col-12 h4 p-0'}}) }}
+                    {{ form_widget(formuJuego.nombre, { 'required': false, 'attr': {'class': 'col-12'}}) }}
+                    {{ form_errors(formuJuego.nombre) }}
                 </div>
 
-                <div class="input__item col-12 row align-items-baseline">
-                    <p class="col-4 h6 p-0 text-light">Dimensiones:</p>
-                    {{ form_label(formuJuego.altoTablero, 'Alto:', { 'label_attr': {'class': 'pr-1'}}) }}
-                    {{ form_widget(formuJuego.altoTablero, { 'attr': {'class': 'col-2'}}) }}
+                <div class="col-12 mt-3">
+                    <div class="input__item col-12 pr-0 row align-items-baseline">
+                        <p class="col-12 h4 p-0 mb-2 text-light">Jugadores:</p>
+                        {{ form_label(formuJuego.altoTablero, 'Desde:', { 'label_attr': {'class': ' col-3 pr-1 pl-2'}})
+                        }}
+                        {{ form_widget(formuJuego.minJugadores, {'required': false, 'attr': {'class': 'col-3 p-0'}}) }}
 
-                    {{ form_label(formuJuego.altoTablero, 'Ancho:', { 'label_attr': {'class': 'pr-1 pl-2'}}) }}
-                    {{ form_widget(formuJuego.anchoTablero, { 'attr': {'class': 'col-2'}}) }}
+                        {{ form_label(formuJuego.altoTablero, 'Hasta:', { 'label_attr': {'class': ' col-3 pr-1 pl-2'}})
+                        }}
+                        {{ form_widget(formuJuego.maxJugadores, {'required': false, 'attr': {'class': 'col-3 p-0'}}) }}
 
-                    {{ form_errors(formuJuego.altoTablero, { 'attr': {'class': 'col-12'}}) }}
-                    {{ form_errors(formuJuego.anchoTablero, { 'attr': {'class': 'col-12'}}) }}
+                        {{ form_errors(formuJuego.minJugadores, { 'attr': {'class': 'col-12'}}) }}
+                        {{ form_errors(formuJuego.maxJugadores, { 'attr': {'class': 'col-12'}}) }}
+                    </div>
+
+                    <div class="input__item col-12 pr-0 row align-items-baseline">
+                        <p class="col-12 h4 p-0 mb-2 text-light">Dimensiones:</p>
+                        {{ form_label(formuJuego.altoTablero, 'Alto:', { 'label_attr': {'class': 'col-3 pr-1 pl-2'}}) }}
+                        {{ form_widget(formuJuego.altoTablero, {'required': false, 'attr': {'class': 'col-3 p-0'}}) }}
+
+                        {{ form_label(formuJuego.altoTablero, 'Ancho:', { 'label_attr': {'class': 'col-3 pr-1 pl-2'}})
+                        }}
+                        {{ form_widget(formuJuego.anchoTablero, {'required': false, 'attr': {'class': 'col-3 p-0'}}) }}
+
+                        {{ form_errors(formuJuego.altoTablero, { 'attr': {'class': 'col-12'}}) }}
+                        {{ form_errors(formuJuego.anchoTablero, { 'attr': {'class': 'col-12'}}) }}
+                    </div>
+                </div>
+
+
+            </div>
+
+            {# bloque descripcion e imagen #}
+            <div class="col-6 row pl-5">
+                <div class="input__item col-12">
+                    {{ form_label(formuJuego.descripcion, 'Descripción', { 'label_attr': {'class': 'col-12 h4 p-0'}}) }}
+                    {{ form_widget(formuJuego.descripcion, {'required': false, 'attr': {'class': 'col-12 h-75'}}) }}
+                    {{ form_errors(formuJuego.descripcion, { 'attr': {'class': 'col-12'}}) }}
+                </div>
+
+                <div class="input__item col-12 mt-4">
+                    {{ form_label(formuJuego.imagen, 'Imagen', { 'label_attr': {'class': 'col-12 h4 p-0'}}) }}
+                    {{ form_widget(formuJuego.imagen, {'required': false }) }}
+                    {{ form_errors(formuJuego.imagen) }}
                 </div>
             </div>
 
-            <div class="input__item col-6 mt-4">
-                {{ form_label(formuJuego.imagen) }}
-                {{ form_widget(formuJuego.imagen) }}
-                {{ form_errors(formuJuego.imagen) }}
-            </div>
-
-            <div class="col-12">
-                <button type="submit" class="site-btn">crear</button>
+            {# bloque submit #}
+            <div class="col-10 offset-2 mt-5">
+                <a href="{{ path('home') }}" class="site-btn bg-light text-dark ml-3">Cancelar</a>
+                {% if juego.id is not null %}
+                <button type="submit" class="site-btn ml-3">Editar</button>
+                {% else %}
+                <button type="submit" class="site-btn ml-3">crear</button>
+                {% endif %}
             </div>
 
             {{ form_end(formuJuego) }}

@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Juego;
-use App\Form\JuegoFormType;
+use App\Form\CreaJuegoFormType;
+use App\Form\EditaJuegoFormType;
 use App\Repository\JuegoRepository;
 use App\Repository\UsuarioRepository;
 use App\Service\Calculadora;
@@ -32,44 +33,64 @@ class MainController extends AbstractController
     }
 
     // TODO: Hacer que solo pueda acceder un admin
-    #[Route('/nuevoJuego', name: 'formularioJuego')]
-    public function formuJuego(Request $request, JuegoRepository $repoJueg, SluggerInterface $slugger): Response
+    #[Route('/formularioJuego/{id}', name: 'formularioJuego')]
+    public function formuJuego(Request $request, JuegoRepository $repoJueg, SluggerInterface $slugger, int $id = null): Response
     {
-        $juego = new Juego();
-        $formuJuego = $this->createForm(JuegoFormType::class, $juego);
+        if ($id !== null) {
+            $juego = $repoJueg->find($id);
+            $formuJuego = $this->createForm(EditaJuegoFormType::class, $juego);
+            $img = $juego->getImagen();
+
+        } else {
+            $juego = new Juego();
+            $formuJuego = $this->createForm(CreaJuegoFormType::class, $juego);
+        }
+
         $formuJuego->handleRequest($request);
-        
+
         if ($formuJuego->isSubmitted() && $formuJuego->isValid()) {
-            $juego = $formuJuego->getData();
 
-            $img = $formuJuego['imagen']->getData();
+            if ($id === null || $formuJuego['imagen']->getData() !== null) {
+                $img = $formuJuego['imagen']->getData();
+            }
 
-            // dd($img);
+            $nuevoJuego = $formuJuego->getData();
 
-            if ($img) {
+            if ($id === null || $formuJuego['imagen']->getData() !== null) {
                 $originalFilename = pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFileName = $slugger->slug($originalFilename);
-                $newFilename = $safeFileName.'-'.uniqid().'.'.$img->guessExtension();
-
-                // dd($newFilename);
+                $newFilename = $safeFileName . '-' . uniqid() . '.' . $img->guessExtension();
 
                 try {
                     $img->move('img/juegos/', $newFilename);
 
-                    $juego->setImagen($newFilename);
+                    $nuevoJuego->setImagen($newFilename);
                 } catch (FileException $e) {
                     throw $e;
                 }
-            }   
+            } else {
+                $nuevoJuego->setImagen($img);
+            }
 
-            $repoJueg->save($juego, true);
-            
+            $repoJueg->save($nuevoJuego, true);
+
             return $this->redirectToRoute('home');
         }
-        
-        return $this->render('juegos/formulario.html.twig', ['formuJuego' => $formuJuego]);
+
+        return $this->render('juegos/formulario.html.twig', ['formuJuego' => $formuJuego, 'juego' => $juego]);
     }
-    
+
+    // TODO: Hacer que solo pueda acceder un admin
+    #[Route('/borraJuego/{id}', name: 'borraJuego')]
+    public function FunctionName(JuegoRepository $repoJueg, int $id): Response
+    {
+        $juego = $repoJueg->find($id);
+
+        $repoJueg->remove($juego, true);
+        
+        return $this->redirectToRoute('home');
+    }
+
     // TODO: Hacer que solo pueda acceder un admin
     #[Route('/haceAdmin/{id}', name: 'haceAdmin')]
     public function haceAdmin(UsuarioRepository $repo, ManagerRegistry $manager, int $id): Response

@@ -1,12 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	{% if error %}
-		<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-	{% endif %}
+
 
 	{# banner #}
-	<section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+	<section class="normal-breadcrumb set-bg" data-setbg="{{ asset('img/normal-breadcrumb.jpg') }}">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
@@ -36,6 +34,9 @@
 								<div class="input__item">
 									<input type="email" placeholder="Email address" id="username" name="_username" value="{{ last_username }}">
 									<span class="icon_mail"></span>
+									{% if error %}
+										<div class="error">{{ mensajeError }}</div>
+									{% endif %}
 								</div>
 								<div class="input__item">
 									<input type="password" placeholder="Password" id="password" name="_password">

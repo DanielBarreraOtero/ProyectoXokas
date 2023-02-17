@@ -8,7 +8,7 @@
 					<h4 class="col-11">GESTIÓN DE JUEGOS</h4>
 				</div>
 				<div class="col-2 d-flex flex-row-reverse">
-					<a href="{{ path('formularioJuego' )}}"><span class="text-light h3 fa fa-plus"></span></a>
+					<a href="{{ url('formularioJuego' )}}"><span class="text-light h3 fa fa-plus"></span></a>
 				</div>
 			</div>
 			<div class="col-12">
@@ -51,8 +51,8 @@
 							</td>
 							<td>
 								<div>
-									<a href="#"><span class="text-light fa fa-pencil"></span></a>
-									<a href="#"><span class="text-light fa fa-trash"></span></a>
+									<a href="{{ path('formularioJuego', {'id': juego.id})}}"><span class="text-light fa fa-pencil"></span></a>
+									<a href="{{ path('borraJuego', {'id': juego.id})}}"><span class="text-light fa fa-trash"></span></a>
 								</div>
 							</td>
 						</tr>
