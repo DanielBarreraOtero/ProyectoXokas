@@ -3,6 +3,7 @@ class Sala {
     constructor(div) {
         this.mesas = [];
         this.div = div;
+        this.distribucion = null;
 
         this.div.droppable({
             drop: function (ev, ui) {
@@ -16,9 +17,26 @@ class Sala {
                 divMesa.newRight = divMesa.newLeft + divMesa.width();
                 divMesa.newBottom = divMesa.newTop + divMesa.height();
 
+                console.log(mesa);
+
                 if (posicionValida(divMesa, sala.div)) {
                     sala.addMesa(mesa, divMesa.newTop, divMesa.newLeft);
                     mesa.update();
+
+                } else if (mesa.padre !== sala) {
+                    let texto = [$('<p>').html(mesa.width + ' cm').css({ margin: 0 }).attr({ 'class': 'text-light' }),
+                    $('<p>').html('x').css({ margin: 0 }).attr({ 'class': 'text-light' }),
+                    $('<p>').html(mesa.height + ' cm').css({ margin: 0 }).attr({ 'class': 'text-light' })];
+
+                    divMesa.css({
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: '',
+                        width: 100,
+                        height: 100
+                    }).html(texto);
                 }
             }
         }).data('sala', this);
@@ -57,6 +75,7 @@ class Almacen {
     constructor(div) {
         this.mesas = [];
         this.div = div;
+        this.distribucion = null;
 
         this.div.droppable({
             drop: function (ev, ui) {
@@ -68,8 +87,7 @@ class Almacen {
                 mesa.update();
             }
         })
-            .data('almacen', this)
-            .css({ overflow: 'scroll' });
+            .data('almacen', this);
     }
 
     addMesa(mesa) {
@@ -82,9 +100,9 @@ class Almacen {
         mesa.right = -1;
 
         if (mesa.div) {
-            let texto = [$('<p>').html(mesa.width).css({ margin: 0 }),
-            $('<p>').html('x').css({ margin: 0 }),
-            $('<p>').html(mesa.height).css({ margin: 0 })];
+            let texto = [$('<p>').html(mesa.width + ' cm').css({ margin: 0 }).attr({ 'class': 'text-light' }),
+            $('<p>').html('x').css({ margin: 0 }).attr({ 'class': 'text-light' }),
+            $('<p>').html(mesa.height + ' cm').css({ margin: 0 }).attr({ 'class': 'text-light' })];
 
             mesa.div.appendTo(this.div)
                 // le ponemos el mismo tamaño a todas las mesas
@@ -115,16 +133,16 @@ class Mesa {
         this.sillas = sillas
         this.idBD = id;
         this.id = 'mesa_' + id;
+        this.posicionamiento = null;
     }
 
     creaDiv() {
         this.div = $('<div>')
-            .attr({ id: this.id, class: 'mesa' })
+            .attr({ id: this.id, class: 'c-mantenimiento-sala__mesa' })
             .data('mesa', this)
             .css({
                 width: this.width + 'px',
                 height: this.height + 'px',
-                border: '2px solid black',
             }).draggable({
                 drag: function (ev, ui) {
                     let mesa = $(this);
@@ -146,7 +164,7 @@ class Mesa {
                     // nos aseguramos de que el helper tiene el tamaño adecuado
                     ui.helper.css({
                         height: mesa.height,
-                        width: mesa.width
+                        width: mesa.width,
                     }).text('');
 
                     $(this).css({
@@ -155,7 +173,7 @@ class Mesa {
                         display: 'none'
                     }).text('');
                 },
-                stop: function() {
+                stop: function () {
                     // para que en caso de que la intentemos mover y no se pueda
                     // al no ser droppeada en ningun div, no se le aplicaria ningun estilo
                     // le ponemos flex para que no desaparezca al chocar
@@ -172,24 +190,50 @@ class Mesa {
         return this.div;
     }
 
+    // guarda el estado de la mesa en la base de datos
     update() {
-        var data = {
-            mesa: {
-                id: this.idBD,
-                alto: this.height,
-                ancho: this.width,
-                posY: this.top,
-                posX: this.left,
-                sillas: this.sillas,
-            }
-        };
 
-        $.ajax({
-            type: "PUT",
-            url: "/api/mesa",
-            data: JSON.stringify(data),
-            dataType: "JSON"
-        });
+        // si no estamos tratando con una distribucion, cambiamos la poscion base de la mesa
+        if (this.padre.distribucion === null) {
+            var data = {
+                mesa: {
+                    id: this.idBD,
+                    alto: this.height,
+                    ancho: this.width,
+                    posY: this.top,
+                    posX: this.left,
+                    sillas: this.sillas,
+                }
+            };
+
+            $.ajax({
+                type: "PUT",
+                url: "/api/mesa",
+                data: JSON.stringify(data),
+                dataType: "JSON"
+            });
+        } else {
+            // si tiene distribucion
+
+            // si se mueve a la sala se tiene que crear o actualizar el posicionamiento de la mesa
+            if (this.padre instanceof Sala) {
+
+            } else {
+                // si se mueve al almacen tendremos que borrar el posicionamiento de la mesa
+                var mesa = this;
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/posicionamiento",
+                    data: JSON.stringify(data = { posicionamiento: this.posicionamiento }),
+                    dataType: "JSON",
+                    success: function () {
+                        mesa.posicionamiento = null;
+                        console.log(mesa);
+                    }
+                });
+            }
+        }
     }
 }
 

@@ -1731,6 +1731,32 @@ ol {
   top: 14px;
 }
 
+.c-mantenimiento-sala__sala {
+  height: 650px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+.c-mantenimiento-sala__almacen {
+  height: 650px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.c-mantenimiento-sala__mesa {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+.c-mantenimiento-sala__selectDistri {
+  height: 30px;
+}
+.c-mantenimiento-sala__selectDistri .list, .c-mantenimiento-sala__selectDistri .current {
+  line-height: 1.5;
+  display: inline-block;
+  vertical-align: super;
+}
+
 .c-tabla-juegos {
   border-collapse: collapse;
 }

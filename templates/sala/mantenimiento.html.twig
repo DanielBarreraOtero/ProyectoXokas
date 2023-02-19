@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block javascripts %}
+<script src="{{ asset('js/mesas.js') }} "></script>
+<script src="{{ asset('js/launchMesas.js') }} "></script>
+{% endblock %}
+
+{% block body %}
+<section class="product-page spad">
+    <div class="container">
+        <div class="row">
+            {# seccion de sala #}
+            <section class="col-lg-8 position-static">
+                <div class="product__page__content h-100">
+                    {# titulo #}
+                    <div class="product__page__title p-0">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="section-title">
+                                    <h4>GESTIÓN DE SALA</h4>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-top">
+                                {# TODO: rellenar con gestion de distribuciones #}
+                                <p class="col-4 h4 text-light"> Distribución: </p>
+                                <div class="col-4 text-dark">
+                                    <select class="c-mantenimiento-sala__selectDistri" name="distribuciones"
+                                        id="selectDistribuciones">
+                                        <option value="0">ninguna</option>
+                                    </select>
+                                </div>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                    {# sala #}
+                    <section class="row h-100 ">
+                        <div class="col-12 position-static p-0 c-mantenimiento-sala__sala" id="sala"></div>
+                    </section>
+                </div>
+            </section>
+            {# seccion de almacen #}
+            <section class="col-lg-4 col-md-6 col-sm-8">
+                <div class="product__sidebar">
+                    <div class="product__sidebar__view">
+                        <div class="product__page__title">
+                            <div class="section-title mb-1">
+                                <h4>Almacén</h4>
+                            </div>
+                        </div>
+                        <div class="col-12 position-static mt-4 c-mantenimiento-sala__almacen" id="almacen"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+
+{% endblock body %}

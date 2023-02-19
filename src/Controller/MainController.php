@@ -40,7 +40,6 @@ class MainController extends AbstractController
             $juego = $repoJueg->find($id);
             $formuJuego = $this->createForm(EditaJuegoFormType::class, $juego);
             $img = $juego->getImagen();
-
         } else {
             $juego = new Juego();
             $formuJuego = $this->createForm(CreaJuegoFormType::class, $juego);
@@ -87,8 +86,14 @@ class MainController extends AbstractController
         $juego = $repoJueg->find($id);
 
         $repoJueg->remove($juego, true);
-        
+
         return $this->redirectToRoute('home');
+    }
+
+    #[Route('/mantenimientoSala', name: 'mantenimientoSala')]
+    public function mantenimientoSala(): Response
+    {
+        return $this->render('sala/mantenimiento.html.twig');
     }
 
     // TODO: Hacer que solo pueda acceder un admin
