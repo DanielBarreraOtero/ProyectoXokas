@@ -17,8 +17,6 @@ class Sala {
                 divMesa.newRight = divMesa.newLeft + divMesa.width();
                 divMesa.newBottom = divMesa.newTop + divMesa.height();
 
-                console.log(mesa);
-
                 if (posicionValida(divMesa, sala.div)) {
                     sala.addMesa(mesa, divMesa.newTop, divMesa.newLeft);
                     mesa.update();
@@ -217,10 +215,43 @@ class Mesa {
 
             // si se mueve a la sala se tiene que crear o actualizar el posicionamiento de la mesa
             if (this.padre instanceof Sala) {
+                // comprobamos si la mesa tiene algun posicionamiento existente
+
+                if (this.posicionamiento !== null) {
+                    // lo actualizamos
+
+                    this.posicionamiento.posY = this.top;
+                    this.posicionamiento.posX = this.left;
+
+                    $.ajax({
+                        type: "PUT",
+                        url: "/api/posicionamiento",
+                        data: JSON.stringify(data = { posicionamiento: this.posicionamiento }),
+                        dataType: "JSON"
+                    });
+                } else {
+                    // lo creamos
+                    let mesa = this;
+                    let newPos = {
+                        posicionamiento: JSON.stringify({
+                            distribucion_id: this.padre.distribucion.id,
+                            mesa_id: this.idBD,
+                            posX: this.left,
+                            posY: this.top
+                        })
+                    };
+
+                    $.post("/api/posicionamiento", newPos,
+                        function (data) {
+                            mesa.posicionamiento = data.posicionamiento;
+                        }
+                    );
+
+                }
 
             } else {
                 // si se mueve al almacen tendremos que borrar el posicionamiento de la mesa
-                var mesa = this;
+                let mesa = this;
 
                 $.ajax({
                     type: "DELETE",
@@ -229,7 +260,6 @@ class Mesa {
                     dataType: "JSON",
                     success: function () {
                         mesa.posicionamiento = null;
-                        console.log(mesa);
                     }
                 });
             }

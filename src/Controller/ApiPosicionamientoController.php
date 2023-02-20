@@ -52,7 +52,7 @@ class ApiPosicionamientoController extends AbstractController
 
     #[Route('/posicionamiento', name: 'postPosicionamiento', methods: 'POST')]
     public function postPosicionamiento(Request $request, PosicionamientoRepository $repoPosi, MesaRepository $repoMesa, DistribucionRepository $repoDistri): Response
-    {
+    {   
         $posicionamiento = json_decode($request->request->get('posicionamiento'));
 
         $newPosicionamiento = new Posicionamiento();
@@ -63,7 +63,7 @@ class ApiPosicionamientoController extends AbstractController
 
         $repoPosi->save($newPosicionamiento, true);
 
-        return $this->json(['ok' => true, 'posicionamientoi' => $newPosicionamiento], 201);
+        return $this->json(['ok' => true, 'posicionamiento' => $newPosicionamiento], 201);
     }
 
     #[Route('/posicionamiento', name: 'putPosicionamiento', methods: 'PUT')]
@@ -77,7 +77,7 @@ class ApiPosicionamientoController extends AbstractController
         $newPosicionamiento->setPosX($posicionamiento->posX);
         $newPosicionamiento->setPosY($posicionamiento->posY);
 
-        $repoPosi->save($newPosicionamiento);
+        $repoPosi->save($newPosicionamiento, true);
 
         return $this->json(['ok' => true, 'posicionamiento' => $newPosicionamiento], 200);
     }
