@@ -93,5 +93,10 @@ class Posicionamiento implements JsonSerializable
         $std->posY = $this->getPosY();
 
         return $std;
-    }    
+    }
+
+    public function __toString()
+    {
+        return $this->id . ' | ' . $this->distribucion->getId() . ' - ' . $this->mesa->getId();
+    }
 }

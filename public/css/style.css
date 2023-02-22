@@ -1733,6 +1733,9 @@ ol {
 
 .c-mantenimiento-sala__sala {
   height: 650px;
+  width: 870px;
+  min-width: 870px;
+  max-width: 870px;
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 .c-mantenimiento-sala__almacen {
@@ -1755,6 +1758,10 @@ ol {
   line-height: 1.5;
   display: inline-block;
   vertical-align: super;
+}
+.c-mantenimiento-sala__creaDistri {
+  padding: 2px 10px 0px 10px;
+  height: 30px;
 }
 
 .c-tabla-juegos {

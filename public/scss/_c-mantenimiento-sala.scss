@@ -2,6 +2,9 @@
 
     &__sala{
         height: 650px;
+        width: 870px;
+        min-width: 870px;
+        max-width: 870px;
         border: 2px solid rgba(255, 255, 255, 0.2);
     }
     
@@ -30,5 +33,10 @@
             display: inline-block;
             vertical-align: super;
           }
+    }
+
+    &__creaDistri {
+        padding: 2px 10px 0px 10px;
+        height: 30px;
     }
 }

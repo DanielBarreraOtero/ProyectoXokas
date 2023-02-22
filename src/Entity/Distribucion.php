@@ -18,7 +18,7 @@ class Distribucion implements JsonSerializable
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, unique: true)]
     private ?\DateTimeInterface $fecha = null;
 
     #[ORM\OneToMany(mappedBy: 'distribucion', targetEntity: Posicionamiento::class)]

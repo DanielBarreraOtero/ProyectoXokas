@@ -53,7 +53,7 @@ class ApiDistribucionController extends AbstractController
         $distribucion = json_decode($request->request->get('distribucion'));
 
         $newDistribucion = new Distribucion();
-        $newDistribucion->setFecha(new DateTime($distribucion->fecha->date));
+        $newDistribucion->setFecha(new DateTime($distribucion->fecha));
 
         $repoDistri->save($newDistribucion, true);
 

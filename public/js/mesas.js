@@ -41,6 +41,13 @@ class Sala {
     }
 
     addMesa(mesa, top, left) {
+        // lo quitamos del array de mesas de su padre para meterlo en el de este
+        if (mesa.padre instanceof Almacen) {
+            let index = mesa.padre.mesas.indexOf(mesa);
+
+            mesa.padre.mesas.splice(index, 1);
+        }
+
         this.mesas.push(mesa);
         mesa.padre = this;
 
@@ -89,6 +96,13 @@ class Almacen {
     }
 
     addMesa(mesa) {
+        // lo quitamos del array de mesas de su padre para meterlo en el de este
+        if (mesa.padre instanceof Almacen) {
+            let index = mesa.padre.mesas.indexOf(mesa);
+
+            mesa.padre.mesas.splice(index, 1);
+        }
+
         this.mesas.push(mesa);
         mesa.padre = this;
 
