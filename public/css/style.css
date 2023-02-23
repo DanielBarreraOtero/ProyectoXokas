@@ -1733,9 +1733,9 @@ ol {
 
 .c-mantenimiento-sala__sala {
   height: 650px;
-  width: 870px;
-  min-width: 870px;
-  max-width: 870px;
+  width: 1050px;
+  min-width: 1050px;
+  max-width: 1050px;
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 .c-mantenimiento-sala__almacen {

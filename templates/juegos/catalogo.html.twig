@@ -51,8 +51,10 @@
 							</td>
 							<td>
 								<div>
-									<a href="{{ path('formularioJuego', {'id': juego.id})}}"><span class="text-light fa fa-pencil"></span></a>
-									<a href="{{ path('borraJuego', {'id': juego.id})}}"><span class="text-light fa fa-trash"></span></a>
+									<a href="{{ path('formularioJuego', {'id': juego.id})}}"><span
+											class="text-light fa fa-pencil"></span></a>
+									<a href="{{ path('borraJuego', {'id': juego.id})}}"><span
+											class="text-light fa fa-trash"></span></a>
 								</div>
 							</td>
 						</tr>
@@ -161,12 +163,12 @@
 										</div>
 
 										{# detalles de juego #}
-										<div class="row">
+										<div class="row h-100">
 											<div class="col-6">
 												<img src="#" class="mt-4" id="imgSeleccionJuego" alt="imagen del juego">
 											</div>
 
-											<div class="col-6">
+											<div class="col-6 h-100">
 												<h4 class="tituloJuegoSeleccionado">Titulo</h4>
 												<p class="col-11 descrpJuegoSeleccionado mt-1">
 													Descripción del juego
@@ -181,6 +183,13 @@
 													al nice-select pero en el otro si #}
 													<select class="col-4 ml-2 selectNJugadores"
 														name="selectNJugadores"></select>
+
+													<div class="col-12 d-flex justify-content-center">
+														<button class="btn site-btn mt-5 align-self-center"
+															id="btn-siguiente-reserva">
+															<p class="h2 text-light m-0">Siguiente</p>
+														</button>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -205,13 +214,17 @@
 												id="seleccionJuegoFinal"></select>
 											<select class="col-2" name="seleccionJugadoresFinal"
 												id="seleccionJugadoresFinal"></select>
-											<h4 class="col-12">Fecha</h4>
-											<div class="col-12" id="eldatepiker"></div>
-											<h4 class="col-12">Hora</h4>
-											<h6>Inicio:
-											</h6>
-											<h6>Fin:
-											</h6>
+											<div class="col-6">
+												<h4 class="col-12">Fecha</h4>
+												<div class="col-12 p-0" id="dataPicker-reservas"></div>
+											</div>
+											<div class="col-6">
+												<h4 class="col-12">Hora</h4>
+												<h6>Inicio:
+												</h6>
+												<h6>Fin:
+												</h6>
+											</div>
 										</section>
 										<section>
 											<h4>Mesa</h4>

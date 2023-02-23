@@ -10,7 +10,7 @@ $(async function () {
 
     // logica de dialog
     creaDialog(dialog, dateDistri, distribuciones, selectDistri);
-    creaDatePicker(dateDistri, distribuciones);
+    creaDatePickerDistribuciones(dateDistri, distribuciones);
 
     $('.c-mantenimiento-sala__creaDistri').click(() => {
         dialog.dialog('open');
@@ -187,7 +187,7 @@ async function creaDialog(dialog, dateDistri, distribuciones, selectDistri) {
     }).dialog('close');
 }
 
-function creaDatePicker(dateDistri, distribuciones) {
+function creaDatePickerDistribuciones(dateDistri, distribuciones) {
     dateDistri.data('fechaValida', false);
 
     var diasInvalidos = [];
