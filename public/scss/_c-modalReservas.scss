@@ -1,58 +1,103 @@
-#c-modalReservas {
+.c-modalReservas {
     left: 50%;
     transform: translate(-50%);
     color: $normal-color;
+
+    &>div {
+        max-width: 90vw;
+    }
+
+    & .modal-content {
+        max-height: none;
+        height: 90vh;
+    }
+
+    & .show .card-body {
+        max-height: none;
+        height: 65vh;
+    }
+
+    & .modal-footer {
+        border: none;
+    }
+
+    &__mesa {
+        border: 2px solid rgba(0, 0, 0, 0.76);
+
+    }
+
+    & .ocupada {
+        background-color: red;
+    }
+
+    & .disponible {
+        background-color: rgb(0, 132, 255);
+    }
 }
 
-#c-modalReservas > div{
-    max-width: 90vw;
-}
-
-#c-modalReservas .modal-content{
-    max-height: none;
-    height: 90vh;
-}
-
-#c-modalReservas .modal-body{
+#c-modalReservas #c-modalReservas .modal-body {
     // overflow: auto;
     // ::-webkit-scrollbar {
     //     width: 10px;
     //   }
-      
+
     //   /* Track */
     //   ::-webkit-scrollbar-track {
     //     background: #f1f1f1; 
     //   }
-       
+
     //   /* Handle */
     //   ::-webkit-scrollbar-thumb {
     //     background: #888; 
     //   }
-      
+
     //   /* Handle on hover */
     //   ::-webkit-scrollbar-thumb:hover {
     //     background: #555; 
     //   }
 }
 
-#c-modalReservas .show .card-body{
-    max-height: none;
-    height: 65vh;
-}
 
-#c-modalReservas .modal-footer{
-    border: none;
-}
+
+
 
 // TODO: conseguir darle un tamaño adecuado a la imagen
-#imgSeleccionJuego {
+#imgSeleccionJuego {}
+
+#imgJuegoSeleccionFinal {
+    width: 200px;
+    height: 200px;
 }
 
 #seleccionFinal .card-body {
     display: grid;
     grid-template-columns: 40% 60%;
+}
 
+#seleccionFinal .nice-select {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+}
 
+#dataPicker-reservas div {
+    max-width: 100%;
+}
+
+// #seleccionFinal .juegoPicker {
+//     justify-content: space-evenly;
+// }
+
+#salaReserva {
+    position: static;
+    width: 35vw;
+    min-width: 35vw;
+    height: calc(35vw / 1.61);
+    border: 1px black solid;
+}
+
+#contSalaReserva {
+    overflow: auto;
 }
 
 .nice-select {

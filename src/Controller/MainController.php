@@ -6,6 +6,7 @@ use App\Entity\Juego;
 use App\Form\CreaJuegoFormType;
 use App\Form\EditaJuegoFormType;
 use App\Repository\JuegoRepository;
+use App\Repository\TramoRepository;
 use App\Repository\UsuarioRepository;
 use App\Service\Calculadora;
 use App\Service\MessageGenerator;
@@ -25,11 +26,12 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(JuegoRepository $repJuego): Response
+    public function index(JuegoRepository $repJuego, TramoRepository $repTramo): Response
     {
         $juegos = $repJuego->findAll();
+        $tramos = $repTramo->findAll();
 
-        return $this->render('index.html.twig', ['juegos' => $juegos]);
+        return $this->render('index.html.twig', ['juegos' => $juegos, 'tramos' => $tramos]);
     }
 
     // TODO: Hacer que solo pueda acceder un admin

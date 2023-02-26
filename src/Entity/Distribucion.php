@@ -55,6 +55,17 @@ class Distribucion implements JsonSerializable
         return $this->posicionamientos;
     }
 
+    public function getPosicionamientosNotLazy(): array
+    {
+        $posicionamientos = [];
+
+        foreach ($this->posicionamientos as $posicionamiento) {
+            $posicionamientos[] = $posicionamiento;
+        }
+
+        return $posicionamientos;
+    }
+
     public function setPosicionamientos(ArrayCollection $posicionamientos)
     {
         $this->posicionamientos = $posicionamientos;
@@ -84,7 +95,7 @@ class Distribucion implements JsonSerializable
 
     public function __toString()
     {
-        return $this->id.' | '.$this->fecha->format('d/m/Y');
+        return $this->id . ' | ' . $this->fecha->format('d/m/Y');
     }
 
     public function jsonSerialize(): mixed
@@ -93,8 +104,16 @@ class Distribucion implements JsonSerializable
 
         $std->id = $this->getId();
         $std->fecha = $this->getFecha();
-        $std->posicionamientos = $this->getPosicionamientos();
+        $std->posicionamientos =[];
+
+        foreach ($this->posicionamientos as $posicionamiento) {
+            $newPosi = $posicionamiento->jsonSerialize();
+            $newPosi->mesa = $posicionamiento->getMesa()->jsonSerialize();
+
+            $std->posicionamientos[] = $newPosi;
+        }
 
         return $std;
     }
+
 }

@@ -126,7 +126,7 @@
 		</div>
 
 		<!-- Modal -->
-		<div class="modal fade" id="c-modalReservas" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal fade c-modalReservas" id="c-modalReservas" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header align-baseline">
@@ -208,27 +208,63 @@
 								<article id="seleccionFinal" class="collapse" aria-labelledby="headerSeleccionFinal"
 									data-parent="#acordeonReservas">
 									<div class="card-body">
-										<section>
-											<h4 class="col-12">Juego</h4>
-											<select class="col-8" name="seleccionJuegoFinal"
-												id="seleccionJuegoFinal"></select>
-											<select class="col-2" name="seleccionJugadoresFinal"
-												id="seleccionJugadoresFinal"></select>
-											<div class="col-6">
+										<section class="row">
+											<div class="col-12 row">
+												<h4 class="col-12">Juego</h4>
+
+												<div class="col-6 h-75 d-flex pr-0 flex-column juegoPicker">
+
+													<select class="col-12 pl-2" name="seleccionJuegoFinal"
+														id="seleccionJuegoFinal">
+														{% for juego in juegos %}
+														<option value="{{ juego.id }}">{{ juego.nombre }}</option>
+														{% endfor %}
+													</select>
+
+													<h5 class="mt-2 pl-0">Nº Jugadores</h5>
+													<select class="col-6 pl-2 mt-2 selectNJugadoresFinal" name="selectNJugadoresFinal"
+														></select>
+												</div>
+
+												<div class="col-6 d-flex pr-0 justify-content-center" id="imgJuegoFinalHolder">
+													<img src="#" alt="Imagen del juego seleccionado"
+														id="imgJuegoSeleccionFinal">
+												</div>
+
+											</div>
+											<div class="col-6 pr-0">
 												<h4 class="col-12">Fecha</h4>
 												<div class="col-12 p-0" id="dataPicker-reservas"></div>
 											</div>
 											<div class="col-6">
 												<h4 class="col-12">Hora</h4>
-												<h6>Inicio:
-												</h6>
-												<h6>Fin:
-												</h6>
+												<h5 class="mt-2">Inicio:
+												</h5>
+												<select class="mt-2 col-10 pl-2 tramoInicioReservas" name="tramoInicio">
+													{% for tramo in tramos %}
+													<option value="{{ tramo.id }}">{{ tramo.horaInicio.format('H:i:s')
+														}}</option>
+													{% endfor %}
+												</select>
+												<h5 class="mt-2">Fin:
+												</h5>
+												<select class="mt-2 col-10 pl-2 tramoFinReservas" name="tramoFin">
+													{% for tramo in tramos %}
+													<option value="{{ tramo.id }}">{{ tramo.horaFin.format('H:i:s')
+														}}</option>
+													{% endfor %}
+												</select>
+												<div class="col-12 pl-0">
+													<button class="btn site-btn mt-4"
+														id="btn-reservar-reserva">
+														<p class="h2 text-light m-0">Reservar</p>
+													</button>
+												</div>
 											</div>
 										</section>
-										<section>
+										<section id="contSalaReserva">
 											<h4>Mesa</h4>
-											<div></div>
+											<div class="col-12" id="salaReserva"></div>
 										</section>
 									</div>
 								</article>

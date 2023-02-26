@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Juego;
 use App\Entity\Mesa;
 use App\Entity\Reserva;
+use App\Entity\Tramo;
 use App\Entity\Usuario;
 use App\Repository\MesaRepository;
 use App\Repository\ReservaRepository;
@@ -55,6 +56,18 @@ class ApiReservaController extends AbstractController
         return $this->json($data, 200);
     }
 
+    #[Route('/reserva/{fecha}/{tramoInicio}/{tramoFin}', name: 'getReservaByFechaTramo', methods: 'GET')]
+    public function getReservasByFechaTramo(ReservaRepository $repoReser, string $fecha, string $tramoInicio, string $tramoFin)
+    {
+        $reservas = $repoReser->findByFechaTramo($fecha, $tramoInicio, $tramoFin);
+
+        if (!isset($reservas[0])) {
+            return $this->json(['ok' => false, 'message' => 'no se han encontrado reservas en este horario'], 200);
+        }
+
+        return $this->json(['ok' => true, 'reservas' => $reservas], 200);
+    }
+
     #[Route('/reserva', name: 'postReserva', methods: 'POST')]
     public function postReserva(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -69,29 +82,29 @@ class ApiReservaController extends AbstractController
         $newReserva->setTramoInicio($manager->getRepository(Tramo::class)->find($reserva->tramo_inicio_id));
         $newReserva->setTramoFin($manager->getRepository(Tramo::class)->find($reserva->tramo_fin_id));
         $newReserva->setAsiste(true);
-        
+
         $manager->persist($newReserva);
         $manager->flush();
-        
+
         return $this->json(['ok' => true, 'reserva' => $newReserva], 201);
     }
-    
+
     #[Route('/reserva', name: 'putReserva', methods: 'PUT')]
     public function putReserva(Request $request, ManagerRegistry $doctrine, ReservaRepository $repoReser): Response
     {
         $manager = $doctrine->getManager();
-        
+
         $reserva = json_decode($request->getContent())->reserva;
-        
+
         $newReserva = $repoReser->find($reserva->id);
-        
+
         $newReserva->setMesa($manager->getRepository(Mesa::class)->find($reserva->mesa_id));
         $newReserva->setUsuario($manager->getRepository(Usuario::class)->find($reserva->usuario_id));
         $newReserva->setJuegos($manager->getRepository(Juego::class)->find($reserva->juego_id));
         $newReserva->setTramoInicio($manager->getRepository(Tramo::class)->find($reserva->tramo_inicio_id));
         $newReserva->setTramoFin($manager->getRepository(Tramo::class)->find($reserva->tramo_fin_id));
         $newReserva->setFecha(new DateTime($reserva->fecha->date));
-        
+
         if (isset($reserva->fecha_cancelacion) && $reserva->fecha_cancelacion !== null) {
             $newReserva->setFechaCancelacion(new DateTime($reserva->fecha_cancelacion->date));
         }

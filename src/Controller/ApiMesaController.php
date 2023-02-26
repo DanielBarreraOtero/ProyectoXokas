@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Mesa;
+use App\Repository\DistribucionRepository;
 use App\Repository\MesaRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,6 +47,25 @@ class ApiMesaController extends AbstractController
         }
 
         return $this->json($data, 200);
+    }
+
+    // fecha en formato 'YYYY-MM-DD'
+    #[Route('/mesa/fecha/{fecha}', name: 'getMesaByFecha', methods: 'GET')]
+    public function getMesaByFecha(Request $request, DistribucionRepository $repoDistri, MesaRepository $repoMesa, string $fecha): Response
+    {
+        $distri = $repoDistri->findByFecha($fecha);
+
+        if (isset($distri[0])) {
+            return $this->json($distri[0], 200);
+        }
+
+        $mesas = $repoMesa->findAll();
+
+        if (isset($mesas[0])) {
+            return $this->json($mesas, 200);
+        }
+
+        return $this->json(['ok' => false, 'message' => 'no se han encontrado mesas'], 404);
     }
 
     #[Route('/mesa', name: 'postMesa', methods: 'POST')]
