@@ -2,7 +2,6 @@ $(function () {
 
     var modal = $('#c-modalReservas');
     salaReservas = new SalaReservas($('#salaReserva'));
-    console.log(salaReservas);
 
     // al clickar en cualquiera de los juegos se muestra el modal y se rellena la primera pantalla con los datos del juego
     $('.product__item').click(async function (e) {
@@ -25,6 +24,23 @@ $(function () {
 
         actualizaModal(idJuego, salaReservas);
     });
+
+    // al cambiar los jugadores en la pagina de seleccionJuego, tambien se cambian en la de seleccionFinal
+    $('#seleccionJuego .selectNJugadores').change(function (e) {
+        e.preventDefault(e)
+
+        $('#seleccionFinal .selectNJugadoresFinal').val($(this).val()).niceSelect('update');
+
+    });
+
+    // al cambiar los jugadores en la pagina de seleccionFinal, tambien se cambian en la de seleccionJuego
+    $('#seleccionFinal .selectNJugadoresFinal').change(function (e) {
+        e.preventDefault(e)
+
+        $('#seleccionJuego .selectNJugadores').val($(this).val()).niceSelect('update');
+
+    });
+
     // al cambiar el juego con el select, se pintan los datos de el juego nuevo
     $('#seleccionJuegoFinal').change(function (e) {
         e.preventDefault(e)
@@ -35,10 +51,6 @@ $(function () {
 
     // al clickar en siguiente se cierra la pestaña de seleccion de juego y se abre la final
     $('#btn-siguiente-reserva').click(async () => {
-        var selectJuegoFinal = $('#seleccionJuegoFinal');
-        var selectJugadoresFinal = $('#seleccionFinal .selectNJugadoresFinal');
-        actualizaSelectsJuegoFinal(selectJuegoFinal, selectJugadoresFinal);
-
         new bootstrap.Collapse($('#seleccionJuego')[0], {
             toggle: true
         })
@@ -106,6 +118,40 @@ $(function () {
 
     });
 
+    $('#btn-reservar-reserva').click(() => {
+        if (salaReservas.seleccionada) {
+            console.log(salaReservas.seleccionada);
+
+            let datepicker = $('#dataPicker-reservas').data('datepicker');
+            let newRes = {
+                reserva: JSON.stringify({
+                    juego_id: $('#seleccionJuegoFinal').val(),
+                    mesa_id: salaReservas.seleccionada.id,
+                    tramo_inicio_id: $('#seleccionFinal .tramoInicioReservas').val(),
+                    tramo_fin_id: $('#seleccionFinal .tramoFinReservas').val(),
+                    fecha: new Date(datepicker.currentYear, datepicker.currentMonth, datepicker.currentDay + 1)
+                })
+            };
+
+            $.post("/api/reserva", newRes,
+                async function (data) {
+                    if (data.ok) {
+                        console.log('bien');
+
+                        modal.modal('hide')
+
+                        console.log(data);
+                    } else {
+                        console.log('mal');
+                        console.log(data);
+                    }
+                }
+            );
+        } else {
+            console.log('no haiga mesa');
+        }
+    })
+
     // al cambiar de tamaño la pagina, se reescalan las mesas de la sala
     $(window).resize(function () {
         salaReservas.resize();
@@ -142,11 +188,17 @@ async function actualizaDisponibilidadMesas(fecha, tramoInicio, tramoFin, sala) 
             reservas.forEach(reserva => {
 
                 if (mesa.id === reserva.mesa_id) {
+                    mesa.ocupada = true;
+                }
+
+                if (mesa.ocupada) {
                     mesa.div.removeClass('disponible')
                     mesa.div.addClass('ocupada')
+                    mesa.disponible = false;
                 } else {
                     mesa.div.removeClass('ocupada')
                     mesa.div.addClass('disponible')
+                    mesa.disponible = true;
                 }
             });
         });
@@ -154,6 +206,7 @@ async function actualizaDisponibilidadMesas(fecha, tramoInicio, tramoFin, sala) 
         sala.mesas.forEach(mesa => {
             mesa.div.removeClass('ocupada')
             mesa.div.addClass('disponible')
+            mesa.disponible = true;
         });
     }
 }
@@ -298,10 +351,6 @@ function creaDatePickerReservas(dateReserv, salaReservas) {
 
     dateReserv.data('fechaBD', (año + '/' + ((mes < 10) ? "0" + mes : mes) + '/' + (dia < 10) ? "0" + dia : dia));
     dateReserv.datepicker().val(((dia < 10) ? "0" + dia : dia) + '/' + ((mes < 10) ? "0" + mes : mes) + '/' + año);
-
-}
-
-function actualizaSelectsJuegoFinal(selectJuegoFinal, selectJugadoresFinal) {
 
 }
 

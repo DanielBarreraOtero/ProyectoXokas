@@ -1,0 +1,29 @@
+.c-formu-evento {
+
+    #edita_evento_form_fecha {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 30% 30% 40%;
+        color: black;
+    }
+
+
+    .nice-select {
+        padding: 0px 10px 0px 10px;
+        height: 30px;
+        color: black;
+        display: flex;
+        align-content: center;
+        flex-wrap: wrap;
+
+        ul {
+            color: black;
+        }
+    }
+
+    ul {
+        list-style-type: none;
+        margin-left: 10px;
+        color: #ff4343;
+    }
+}

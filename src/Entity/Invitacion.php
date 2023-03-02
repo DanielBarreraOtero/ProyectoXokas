@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\InvitacionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use stdClass;
 
 #[ORM\Entity(repositoryClass: InvitacionRepository::class)]
-class Invitacion
+class Invitacion implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -63,5 +65,17 @@ class Invitacion
         $this->asiste = $asiste;
 
         return $this;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        $std = new stdClass();
+
+        $std->id = $this->getId();
+        $std->evento = $this->getEvento();
+        $std->usuario = $this->getUsuario();
+        $std->asiste = $this->isAsiste();
+
+        return $std;
     }
 }

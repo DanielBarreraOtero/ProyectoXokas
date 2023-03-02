@@ -1,0 +1,184 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+
+<link rel="stylesheet" href="//cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+<script src="{{asset('/js/formularioEvento.js')}}"></script>
+<script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block body %}
+
+{# banner #}
+<section class="normal-breadcrumb set-bg" data-setbg="{{ asset('img/normal-breadcrumb.jpg') }}">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<div class="normal__breadcrumb__text">
+					{% if evento.id is not null %}
+					<h2>Editar Evento</h2>
+					<p>Inserte los datos en el formulario para editar el evento</p>
+					{% else %}
+					<h2>Nuevo Evento</h2>
+					<p>Inserte los datos en el formulario para crear un nuevo evento</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="c-cuerpo">
+
+	<div class="container mt-5 mb-5">
+		<div class="row justify-content-center">
+
+			{{ form_start(formuEvento, { 'attr': {'class': 'col-10 row c-formu-evento ', 'eventoid': evento.id}}) }}
+
+			<div class="col-12 d-flex">
+				<div class="col-4">
+					{{ form_label(formuEvento.nombre, 'Nombre', { 'label_attr': {'class': 'col-12 h4 p-0'}}) }}
+					{{ form_widget(formuEvento.nombre, { 'required': false, 'attr': {'class': 'col-12'}}) }}
+					{{ form_errors(formuEvento.nombre) }}
+				</div>
+				<div class="col-4">
+					{{ form_label(formuEvento.fecha, 'Fecha', { 'label_attr': {'class': 'col-12 h4 p-0'}}) }}
+					{{ form_widget(formuEvento.fecha, { 'required': false, 'attr': {'class': 'col-12'}}) }}
+					{{ form_errors(formuEvento.fecha) }}
+				</div>
+				<div class="col-2">
+					{{ form_label(formuEvento.tramoInicio, 'Hora Inicio', { 'label_attr': {'class': 'col-12 h4 p-0'}})
+					}}
+					{{ form_widget(formuEvento.tramoInicio, { 'required': false, 'attr': {'class': 'col-12'}}) }}
+					{{ form_errors(formuEvento.tramoInicio) }}
+				</div>
+				<div class="col-2">
+					{{ form_label(formuEvento.tramoFin, 'Hora Fin', { 'label_attr': {'class': 'col-12 h4 p-0'}})
+					}}
+					{{ form_widget(formuEvento.tramoFin, { 'required': false, 'attr': {'class': 'col-12'}}) }}
+					{{ form_errors(formuEvento.tramoFin) }}</div>
+			</div>
+
+			<div class="col-12 mt-5 p-0 d-flex">
+				<div class="col-6">
+					<div class="col-12 d-flex justify-content-between">
+						<p class="h4 text-light">Invitados</p>
+
+						<button type="button" id="btnModalInvitados" class="btn " data-toggle="modal" data-target="#c-modalInvitados">
+							<span class="h4 fa fa-plus m-0 text-light"></span>
+						</button>
+					</div>
+					<table class=" col-12 c-tabla-eventos" id="tablaInvitadosEvento">
+						<thead>
+							<tr>
+								<th>Email</th>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Asiste</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for invitacion in invitaciones %}
+							<tr invitacionid="{{invitacion.id}}">
+								<td>{{ invitacion.usuario.getEmail }}</td>
+								<td>{{ invitacion.usuario.getNombre }}</td>
+								<td>{{ invitacion.usuario.getAp1 }}</td>
+								<td>{% if invitacion.Asiste %}✅
+									{% else %}
+									❌
+									{% endif %}
+								</td>
+								<td>
+									<span class="fa fa-times h5 m-0"></span>
+								</td>
+							</tr>
+							{% endfor %}
+
+							{% if invitaciones|length == 0 %}
+							<tr class="emptyHolder">
+								<td colspan="5">
+									<p class="h5 text-light m-0">No hay invitados :(</p>
+								</td>
+							</tr>
+							{% endif %}
+						</tbody>
+					</table>
+				</div>
+
+				<div class="col-6">
+					<div class="col-12 d-flex justify-content-between">
+						<p class="h4 text-light">Juegos</p>
+
+						<button type="button" id="btnModalJuegos" class="btn" data-toggle="modal" data-target="#c-modalJuegos">
+							<span class="h4 fa fa-plus m-0 text-light"></span>
+						</button>
+					</div>
+					<table class=" col-12 c-tabla-eventos" id="tablaJuegosEvento">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Nº Jugadores</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for presentacion in presentaciones %}
+
+							{% if presentacion.juego.getMaxJugadores is same as presentacion.juego.getMinJugadores %}
+							{% set jugadores = presentacion.juego.getMinJugadores %}
+
+							{% else %}
+							{% set jugadores = presentacion.juego.getMinJugadores~' -
+							'~presentacion.juego.getMaxJugadores %}
+
+							{% endif %}
+
+
+							<tr presentacionid="{{presentacion.id}}">
+								<td>{{ presentacion.juego.getNombre }}</td>
+								<td>{{ jugadores }}</td>
+								<td>
+									<span class="fa fa-times h5 m-0"></span>
+								</td>
+							</tr>
+							{% endfor %}
+
+							{% if presentaciones|length == 0 %}
+							<tr class="emptyHolder">
+								<td colspan="3">
+									<p class="h5 text-light m-0">No hay juegos :(</p>
+								</td>
+							</tr>
+							{% endif %}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			{# bloque submit #}
+			<div class="col-10 offset-2 mt-5">
+				<a href="{{ path('eventos') }}" class="site-btn bg-light text-dark ml-3">Cancelar</a>
+				{% if evento.id is not null %}
+				<button type="submit" class="site-btn ml-3">Editar</button>
+				{% else %}
+				<button type="submit" class="site-btn ml-3">crear</button>
+				{% endif %}
+			</div>
+
+			{{ form_end(formuEvento) }}
+		</div>
+
+	</div>
+
+</section>
+{% include "/eventos/modalInvitados.html.twig" %}
+{% include "/eventos/modalJuegos.html.twig" %}
+{% endblock %}

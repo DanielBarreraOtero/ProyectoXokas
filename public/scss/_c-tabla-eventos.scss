@@ -1,0 +1,30 @@
+.c-tabla-eventos {
+    border-collapse: collapse;
+
+    tr {
+        text-align: center;
+    }
+
+    thead th {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid lightgray;
+
+
+        td {
+            padding: 15px 5px 5px 5px;
+
+            &:last-child {
+
+                div {
+                    display: flex;
+                    justify-content: space-around;
+                }
+            }
+        }
+
+    }
+}

@@ -6,13 +6,15 @@ use App\Repository\UsuarioRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use stdClass;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Ya existe una cuenta con este correo')]
-class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
+class Usuario implements UserInterface, PasswordAuthenticatedUserInterface, JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -181,6 +183,17 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reservas;
     }
 
+    public function getIdReservas(): array
+    {
+        $reservas = [];
+
+        foreach ($this->getReservas() as $reserva) {
+            $reservas[] = $reserva->getId();
+        }
+
+        return $reservas;
+    }
+
     public function addReserva(Reserva $reserva): self
     {
         if (!$this->reservas->contains($reserva)) {
@@ -211,6 +224,17 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->invitaciones;
     }
 
+    public function getIdInvitaciones(): array
+    {
+        $invitaciones = [];
+
+        foreach ($this->getInvitaciones() as $invitacion) {
+            $invitaciones[] = $invitacion->getId();
+        }
+
+        return $invitaciones;
+    }
+
     public function addInvitacione(Invitacion $invitacione): self
     {
         if (!$this->invitaciones->contains($invitacione)) {
@@ -236,5 +260,22 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->id.' | '.$this->email;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        $std = new stdClass();
+
+        $std->id = $this->getId();
+        $std->email = $this->getEmail();
+        $std->nombre = $this->getNombre();
+        $std->ap1 = $this->getAp1();
+        $std->ap2 = $this->getAp2();
+        $std->tlf = $this->getTlf();
+        $std->roles = $this->getRoles();
+        $std->reservas = $this->getIdReservas();
+        $std->invitaciones = $this->getIdInvitaciones();
+
+        return $std;
     }
 }

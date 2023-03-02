@@ -12,6 +12,7 @@ use App\Repository\ReservaRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -69,24 +70,34 @@ class ApiReservaController extends AbstractController
     }
 
     #[Route('/reserva', name: 'postReserva', methods: 'POST')]
-    public function postReserva(Request $request, ManagerRegistry $doctrine): Response
+    public function postReserva(Request $request, ManagerRegistry $doctrine, Security $sec): Response
     {
-        $manager = $doctrine->getManager();
-        $reserva = json_decode($request->request->get('reserva'));
+        try {
+            $manager = $doctrine->getManager();
+            $reserva = json_decode($request->request->get('reserva'));
 
-        $newReserva = new Reserva();
-        $newReserva->setMesa($manager->getRepository(Mesa::class)->find($reserva->mesa_id));
-        $newReserva->setUsuario($manager->getRepository(Usuario::class)->find($reserva->usuario_id));
-        $newReserva->setJuegos($manager->getRepository(Juego::class)->find($reserva->juego_id));
-        $newReserva->setFecha(new DateTime($reserva->fecha->date));
-        $newReserva->setTramoInicio($manager->getRepository(Tramo::class)->find($reserva->tramo_inicio_id));
-        $newReserva->setTramoFin($manager->getRepository(Tramo::class)->find($reserva->tramo_fin_id));
-        $newReserva->setAsiste(true);
+            if (isset($reserva->usuario_id)) {
+                $usuario_id = $reserva->usuario_id;
+            } else {
+                $usuario_id = $sec->getUser()->getId();
+            }
 
-        $manager->persist($newReserva);
-        $manager->flush();
+            $newReserva = new Reserva();
+            $newReserva->setMesa($manager->getRepository(Mesa::class)->find($reserva->mesa_id));
+            $newReserva->setUsuario($manager->getRepository(Usuario::class)->find($usuario_id));
+            $newReserva->setJuegos($manager->getRepository(Juego::class)->find($reserva->juego_id));
+            $newReserva->setFecha(new DateTime($reserva->fecha));
+            $newReserva->setTramoInicio($manager->getRepository(Tramo::class)->find($reserva->tramo_inicio_id));
+            $newReserva->setTramoFin($manager->getRepository(Tramo::class)->find($reserva->tramo_fin_id));
+            $newReserva->setAsiste(true);
 
-        return $this->json(['ok' => true, 'reserva' => $newReserva], 201);
+            $manager->persist($newReserva);
+            $manager->flush();
+
+            return $this->json(['ok' => true, 'reserva' => $newReserva], 201);
+        } catch (\Throwable $th) {
+            return $this->json(['ok' => false, 'message' => $th->getMessage()], 200);
+        }
     }
 
     #[Route('/reserva', name: 'putReserva', methods: 'PUT')]

@@ -1763,6 +1763,24 @@ ol {
   padding: 2px 10px 0px 10px;
   height: 30px;
 }
+.c-mantenimiento-sala__creaMesa {
+  padding: 2px 10px 0px 10px;
+  height: 30px;
+}
+.c-mantenimiento-sala__borraMesa {
+  padding: 2px 10px 0px 10px;
+  height: 30px;
+}
+.c-mantenimiento-sala__borraMesaAlert {
+  display: flex;
+  align-items: baseline;
+  position: fixed;
+  bottom: -100px;
+  transition: all 500ms ease-in;
+}
+.c-mantenimiento-sala__borraMesaAlert.active {
+  transform: translateY(-200px);
+}
 
 .c-tabla-juegos {
   border-collapse: collapse;
@@ -1791,6 +1809,50 @@ ol {
   justify-content: space-around;
 }
 
+.c-tabla-eventos {
+  border-collapse: collapse;
+}
+.c-tabla-eventos tr {
+  text-align: center;
+}
+.c-tabla-eventos thead th {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.c-tabla-eventos tbody tr {
+  border-bottom: 1px solid lightgray;
+}
+.c-tabla-eventos tbody tr td {
+  padding: 15px 5px 5px 5px;
+}
+.c-tabla-eventos tbody tr td:last-child div {
+  display: flex;
+  justify-content: space-around;
+}
+
+.c-formu-evento #edita_evento_form_fecha {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 30% 30% 40%;
+  color: black;
+}
+.c-formu-evento .nice-select {
+  padding: 0px 10px 0px 10px;
+  height: 30px;
+  color: black;
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.c-formu-evento .nice-select ul {
+  color: black;
+}
+.c-formu-evento ul {
+  list-style-type: none;
+  margin-left: 10px;
+  color: #ff4343;
+}
+
 .c-formu-juego:after {
   position: absolute;
   right: 51%;
@@ -1804,6 +1866,15 @@ ol {
   list-style-type: none;
   margin-left: 10px;
   color: #ff4343;
+}
+
+#c-modalInvitados .modal-content, #c-modalInvitados .modal-dialog {
+  width: 85vw;
+  max-width: 85vw;
+  height: 75vh;
+}
+#c-modalInvitados #dataTableInvitados_wrapper {
+  color: black;
 }
 
 /*---------------------
@@ -2262,6 +2333,9 @@ ol {
   background-color: red;
 }
 .c-modalReservas .disponible {
+  background-color: rgb(25, 177, 46);
+}
+.c-modalReservas .seleccionada {
   background-color: rgb(0, 132, 255);
 }
 

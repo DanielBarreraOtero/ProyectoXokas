@@ -6,7 +6,7 @@
 				<div class="col-lg-2">
 					<div class="header__logo">
 						<a href="{{ url('home') }}">
-							<img src="img/LogoXoKas.png" alt="">
+							<img src="{{asset('/img/LogoXoKas.png')}}" alt="">
 						</a>
 					</div>
 				</div>
@@ -29,7 +29,7 @@
 										<a href="{{ url('mantenimientoSala')}}">Sala</a>
 									</li>
 									<li>
-										<a href="#">Eventos</a>
+										<a href="{{ url('eventos')}}">Eventos</a>
 									</li>
 								</ul>
 							</nav>
@@ -47,7 +47,7 @@
 										<a href="{{ url('home')}}">Inicio</a>
 									</li>
 									<li>
-										<a href="./blog.html">Eventos</a>
+										<a href="{{ url('eventos')}}">Eventos</a>
 									</li>
 
 									{# si esta logeado puede acceder a sus reservas #}

@@ -1,0 +1,279 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<section class="c-cuerpo">
+
+					<div class="trending__product">
+						{% if role is same as 'admin' %}
+							<div class="col-12">
+								<div class="row ">
+									<div class="section-title col-10">
+										<h4 class="col-11">GESTIÓN DE EVENTOS</h4>
+									</div>
+									<div class="col-2 d-flex flex-row-reverse">
+										<a href="{{ url('formularioEvento' )}}">
+											<span class="text-light h3 fa fa-plus"></span>
+										</a>
+									</div>
+								</div>
+								<div class="col-12">
+
+									<table class="c-tabla-eventos col-12">
+										<thead>
+											<tr>
+												<th>Nombre</th>
+												<th>Fecha</th>
+												<th>Nº Invitados</th>
+												<th>Nº Juegos</th>
+												<th>Hora Inicio</th>
+												<th>Hora Fin</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											{% for evento in eventos %}
+
+												<tr >
+													<td>{{ evento.nombre }}</td>
+													<td>{{ evento.fecha.format('d/m/Y') }}
+													</td>
+													<td>{{ evento.invitaciones|length }}</td>
+													<td>{{ evento.presentaciones|length }}</td>
+													<td>{{ evento.tramoInicio.horaInicio.format('H:i') }}</td>
+													<td>{{ evento.tramoFin.horaFin.format('H:i') }}
+													</td>
+													<td>
+														<div>
+															<a href="{{ path('formularioEvento', {'id': evento.id})}}">
+																<span class="text-light fa fa-pencil"></span>
+															</a>
+															<a href="{{ path('borraEvento', {'id': evento.id})}}">
+																<span class="text-light fa fa-trash"></span>
+															</a>
+														</div>
+													</td>
+												</tr>
+
+											{% endfor %}
+
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+						{% else %}
+							{# Si no es admin #}
+							<div class="col-12">
+
+								<div class="section-title">
+									<h4>CATÁLOGO DE JUEGOS</h4>
+								</div>
+								<div class="row">
+
+									{% for juego in juegos %}
+
+										{% if juego.minJugadores is same as juego.maxJugadores %}
+											{% set jugadores = juego.maxJugadores %}
+
+										{% else %}
+											{% set jugadores = juego.minJugadores ~ ' / ' ~ juego.maxJugadores %}
+
+										{% endif %}
+
+										<div class="col-lg-4 col-md-6 col-sm-6">
+											<div class="product__item" data-id="{{ juego.id }}">
+												<div
+													class="product__item__pic set-bg" data-setbg="img/juegos/{{ juego.imagen }}">
+													{# jugadores #}
+													<div class="ep">{{ jugadores }}
+														<span class="icon_profile"></span>
+													</div>
+													{# tamaño #}
+													<div class="comment">
+														<span class="fa fa-ruler-combined"></span>
+														{{ juego.anchoTablero }}
+														x
+														{{ juego.altoTablero }}
+													</div>
+													{# btn reservar #}
+													<div class="product__item__pic__btn-reservar">
+														RESERVAR
+													</div>
+													{# numero de veces reservado #}
+													<div class="view">
+														<i class="fa fa-star"></i>
+														{{ juego.reservas|length }}
+													</div>
+												</div>
+
+												<div
+													class="product__item__text">
+													{# nombre #}
+													<h4 class="text-light font-weight-bold">
+														{{ juego.nombre | capitalize}}
+													</h4>
+												</div>
+											</div>
+										</div>
+
+
+									{% endfor %}
+
+								</div>
+							</div>
+
+							<!-- Modal -->
+							<div class="modal fade c-modalReservas" id="c-modalReservas" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header align-baseline">
+											<h4 class="modal-title" id="exampleModalLongTitle">Hacer una Nueva Reserva</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span class="fa fa-x" aria-hidden="true"></span>
+											</button>
+										</div>
+										<div
+											class="modal-body">
+											{# Acordeon #}
+											<div
+												id="acordeonReservas">
+												{# Detalles del juego #}
+												<div class="card">
+													<header class="card-header" id="headerSeleccionJuego" data-toggle="collapse" data-target="#seleccionJuego" aria-expanded="true" aria-controls="seleccionJuego">
+														<h4 class="mb-0">
+															Selección de Juego
+														</h4>
+													</header>
+
+													<article id="seleccionJuego" class="collapse show" aria-labelledby="headerSeleccionJuego" data-parent="#acordeonReservas">
+														<div
+															class="card-body">
+															{# Selección de juego #}
+															<div class="row">
+																<label for="selectJuegos" class="h5 ml-4 pt-2">Juego:
+																</label>
+																<select name="selectJuegos" id="selectJuegos" class="col-3 ml-3 selectorJuego">
+																	{% for juego in juegos %}
+																		<option value="{{ juego.id }}">{{ juego.nombre }}</option>
+																	{% endfor %}
+																</select>
+															</div>
+
+															{# detalles de juego #}
+															<div class="row h-100">
+																<div class="col-6">
+																	<img src="#" class="mt-4" id="imgSeleccionJuego" alt="imagen del juego">
+																</div>
+
+																<div class="col-6 h-100">
+																	<h4 class="tituloJuegoSeleccionado">Titulo</h4>
+																	<p class="col-11 descrpJuegoSeleccionado mt-1">
+																		Descripción del juego
+																	</p>
+																	<div class="col-12 mt-4">
+																		<p class="col-8 h8 p-0 font-weight-bold NJugSeleccionJuego">Nº
+																																																																							de jugadores:
+																			<span class="font-weight-light ml-2">2 - 4</span>
+																		</p>
+																		{# TODO: Arreglar que no se ve en la misma row, no se le aplica
+																																																																			la clase col
+																																																																			al nice-select pero en el otro si #}
+																		<select class="col-4 ml-2 selectNJugadores" name="selectNJugadores"></select>
+
+																		<div class="col-12 d-flex justify-content-center">
+																			<button class="btn site-btn mt-5 align-self-center" id="btn-siguiente-reserva">
+																				<p class="h2 text-light m-0">Siguiente</p>
+																			</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</article>
+												</div>
+
+												{# Escoge Mesa #}
+												<div class="card">
+													<header class="card-header" id="headerSeleccionFinal" data-toggle="collapse" data-target="#seleccionFinal" aria-expanded="false" aria-controls="seleccionFinal">
+														<h4 class="mb-0">
+															Selección de Mesa
+														</h4>
+													</header>
+													<article id="seleccionFinal" class="collapse" aria-labelledby="headerSeleccionFinal" data-parent="#acordeonReservas">
+														<div class="card-body">
+															<section class="row">
+																<div class="col-12 row">
+																	<h4 class="col-12">Juego</h4>
+
+																	<div class="col-6 h-75 d-flex pr-0 flex-column juegoPicker">
+
+																		<select class="col-12 pl-2" name="seleccionJuegoFinal" id="seleccionJuegoFinal">
+																			{% for juego in juegos %}
+																				<option value="{{ juego.id }}">{{ juego.nombre }}</option>
+																			{% endfor %}
+																		</select>
+
+																		<h5 class="mt-2 pl-0">Nº Jugadores</h5>
+																		<select class="col-6 pl-2 mt-2 selectNJugadoresFinal" name="selectNJugadoresFinal"></select>
+																	</div>
+
+																	<div class="col-6 d-flex pr-0 justify-content-center" id="imgJuegoFinalHolder">
+																		<img src="#" alt="Imagen del juego seleccionado" id="imgJuegoSeleccionFinal">
+																	</div>
+
+																</div>
+																<div class="col-6 pr-0">
+																	<h4 class="col-12">Fecha</h4>
+																	<div class="col-12 p-0" id="dataPicker-reservas"></div>
+																</div>
+																<div class="col-6">
+																	<h4 class="col-12">Hora</h4>
+																	<h5 class="mt-2">Inicio:
+																	</h5>
+																	<select class="mt-2 col-10 pl-2 tramoInicioReservas" name="tramoInicio">
+																		{% for tramo in tramos %}
+																			<option value="{{ tramo.id }}">{{ tramo.horaInicio.format('H:i:s')
+														}}</option>
+																		{% endfor %}
+																	</select>
+																	<h5 class="mt-2">Fin:
+																	</h5>
+																	<select class="mt-2 col-10 pl-2 tramoFinReservas" name="tramoFin">
+																		{% for tramo in tramos %}
+																			<option value="{{ tramo.id }}">{{ tramo.horaFin.format('H:i:s')
+														}}</option>
+																		{% endfor %}
+																	</select>
+																	<div class="col-12 pl-0">
+																		<button class="btn site-btn mt-4" id="btn-reservar-reserva">
+																			<p class="h2 text-light m-0">Reservar</p>
+																		</button>
+																	</div>
+																</div>
+															</section>
+															<section id="contSalaReserva">
+																<h4>Mesa</h4>
+																<div class="col-12" id="salaReserva"></div>
+															</section>
+														</div>
+													</article>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

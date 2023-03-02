@@ -35,15 +35,7 @@ class ApiMesaController extends AbstractController
         $data['ok'] = true;
 
         foreach ($mesas as $mesa) {
-            $data['mesas'][] = [
-                'id' => $mesa->getId(),
-                'alto' => $mesa->getAlto(),
-                'ancho' => $mesa->getAncho(),
-                'posY' => $mesa->getPosY(),
-                'posX' => $mesa->getPosX(),
-                'sillas' => $mesa->getSillas(),
-                'reservas' => $mesa->getReservas()
-            ];
+            $data['mesas'][] = $mesa;
         }
 
         return $this->json($data, 200);
@@ -114,7 +106,7 @@ class ApiMesaController extends AbstractController
 
         $mesa = json_decode($request->getContent())->mesa;
 
-        $newMesa = $repoMesa->find($mesa->id);
+        $newMesa = $repoMesa->find($mesa->idBD);
 
         $manager->remove($newMesa);
         $manager->flush();

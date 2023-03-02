@@ -19,9 +19,6 @@ class Evento
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha = null;
 
-    #[ORM\Column]
-    private ?int $maxAsistentes = null;
-
     #[ORM\Column(length: 255)]
     private ?string $nombre = null;
 
@@ -62,18 +59,6 @@ class Evento
         return $this;
     }
 
-    public function getMaxAsistentes(): ?int
-    {
-        return $this->maxAsistentes;
-    }
-
-    public function setMaxAsistentes(int $maxAsistentes): self
-    {
-        $this->maxAsistentes = $maxAsistentes;
-
-        return $this;
-    }
-
     public function getNombre(): ?string
     {
         return $this->nombre;
@@ -93,6 +78,17 @@ class Evento
     public function getPresentaciones(): Collection
     {
         return $this->presentaciones;
+    }
+
+    public function getPresentacionesNotLazy(): array
+    {
+        $presentaciones = [];
+
+        foreach ($this->getPresentaciones() as $presentacion) {
+            $presentaciones[] = $presentacion;
+        }
+
+        return $presentaciones;
     }
 
     public function addPresentacione(Presentacion $presentacione): self
@@ -123,6 +119,16 @@ class Evento
     public function getInvitaciones(): Collection
     {
         return $this->invitaciones;
+    }
+    public function getInvitacionesNotLazy(): array
+    {
+        $invitaciones = [];
+
+        foreach ($this->getInvitaciones() as $invitacion) {
+            $invitaciones[] = $invitacion;
+        }
+
+        return $invitaciones;
     }
 
     public function addInvitacione(Invitacion $invitacione): self

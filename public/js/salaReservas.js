@@ -5,9 +5,12 @@ class SalaReservas {
         this.mesas = [];
         this.distribucion = null;
         this.proporcion = 1050 / div.width();
+        this.seleccionada = null;
     }
 
     addMesa(mesa, top, left) {
+        mesa.padre = this;
+        mesa.ocupada = false;
         this.proporcion = 1050 / this.div.width();
         this.mesas.push(mesa);
 
@@ -45,14 +48,20 @@ class SalaReservas {
                 var mesa = divMesa.data('mesa');
                 var imgJuego = $('#imgJuegoSeleccionFinal');
                 var juego = $('#imgJuegoSeleccionFinal').data('juego');
+                console.log(mesa);
+                
+                if ((juego.anchoTablero <= mesa.anchoOriginal && juego.altoTablero <= mesa.altoOriginal) &&
+                    mesa.disponible) {
 
-                if (juego.anchoTablero <= mesa.anchoOriginal && juego.altoTablero <= mesa.altoOriginal) {
                     console.log('cabe');
                     imgJuego.css({
                         width: juego.anchoTablero / this.proporcion + 'px',
                         height: juego.altoTablero / this.proporcion + 'px',
                     }).appendTo(divMesa)
                         .data('mesa', mesa);
+
+                    divMesa.addClass('seleccionada');
+                    this.seleccionada = mesa;
 
                     mesa.imgJuego = imgJuego;
                 } else {

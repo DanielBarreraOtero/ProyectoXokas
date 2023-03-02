@@ -39,4 +39,30 @@
         padding: 2px 10px 0px 10px;
         height: 30px;
     }
+
+    &__creaMesa {
+        padding: 2px 10px 0px 10px;
+        height: 30px;
+    }
+
+    &__borraMesa {
+        padding: 2px 10px 0px 10px;
+        height: 30px;
+
+        &Alert {
+            display: flex;
+            align-items: baseline;
+            position: fixed;
+            bottom: -100px;
+
+            transition: all 500ms ease-in;
+
+
+            &.active {
+                transform: translateY(-200px);
+            }
+
+        }
+
+    }
 }

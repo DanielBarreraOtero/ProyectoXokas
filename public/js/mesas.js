@@ -128,6 +128,17 @@ class Almacen {
                     height: 100
                 })
                 .html(texto);
+
+            if (!mesa.reservas[0]) {
+                mesa.div.append(
+                    $('<button>').addClass('btn site-btn c-mantenimiento-sala__borraMesa')
+                        .html($('<span>').addClass('fa fa-trash'))
+                        .click(() => {
+
+                            mesaDeleteAlert(mesa).appendTo('body');
+                        })
+                );
+            }
         }
     }
 
@@ -135,7 +146,7 @@ class Almacen {
 
 class Mesa {
 
-    constructor(left, top, width, height, sillas, id) {
+    constructor(left, top, width, height, sillas, id, reservas) {
         this.left = left;
         this.top = top;
         this.width = width;
@@ -145,6 +156,7 @@ class Mesa {
         this.sillas = sillas
         this.idBD = id;
         this.id = 'mesa_' + id;
+        this.reservas = reservas;
         this.posicionamiento = null;
     }
 
@@ -279,6 +291,35 @@ class Mesa {
             }
         }
     }
+
+    // Elimina una mesa de la base de datos
+    delete() {
+        var oldMesa = this;
+
+        var div = this.div;
+        var padre = this.padre;
+
+        this.div = '';
+        this.padre = '';
+
+        $.ajax({
+            type: "DELETE",
+            url: "/api/mesa",
+            data: JSON.stringify({ mesa: this }),
+            dataType: "JSON",
+            success: function (respuesta) {
+                // si se ha eliminado correctamente, la quitamos del alamacen y eliminamos su div
+                if (padre) {
+                    let index = padre.mesas.indexOf(oldMesa);
+
+                    padre.mesas.splice(index, 1);
+                    console.log(padre);
+                }
+
+                div.remove();
+            }
+        });
+    }
 }
 
 function posicionValida(mesa, sala) {
@@ -332,4 +373,28 @@ function dimensiona(comp) {
     comp.top = comp.offset().top;
     comp.right = comp.left + comp.width();
     comp.bottom = comp.top + comp.height();
+}
+
+function mesaDeleteAlert(mesa) {
+    return $('<div>').addClass('alert alert-danger fade show c-mantenimiento-sala__borraMesaAlert active')
+        .attr('role', 'alert')
+        .html('¿Está seguro que desea borrar esta mesa?')
+        .append(
+            $('<button>').addClass('btn btn-danger ml-2 mr-2').attr('type', 'button')
+                .html('Eliminar')
+                .click((e) => {
+                    mesa.delete();
+                    console.log($(e.target).parent());
+                    $(e.target).parent().alert('close');
+                })
+        )
+        .append(
+            $('<button>').addClass('close').attr({
+                'data-dismiss': "alert",
+                'aria-label': "Close",
+            }).append($('<span>').attr('aria-hidden', 'true')
+                .html("&times;")
+            )
+
+        )
 }

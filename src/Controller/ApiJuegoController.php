@@ -51,6 +51,29 @@ class ApiJuegoController extends AbstractController
         return $this->json($data, 200);
     }
 
+    /**
+     * juegos añadibles a un evento
+     *      
+     */
+    #[Route('/juego/notEvento/{id}', name: 'getJuegoByNotEvento', methods: 'GET')]
+    public function getJuegoByNotEvento(JuegoRepository $repoJuego, int $id): Response
+    {
+        $juegos = $repoJuego->findByNotInEventoId($id);
+
+        if (!isset($juegos[0])) {
+            return $this->json(['ok' => false, 'message' => 'no se han encontrado juegos'], 200);
+        }
+
+        $data = [];
+        $data['ok'] = true;
+
+        foreach ($juegos as $juego) {
+            $data['juegos'][] = $juego;
+        }
+
+        return $this->json($data, 200);
+    }
+
     #[Route('/juego', name: 'postJuego', methods: 'POST')]
     public function postJuego(Request $request, ManagerRegistry $doctrine): Response
     {

@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Evento;
 use App\Entity\Juego;
+use App\Form\CreaEventoFormType;
 use App\Form\CreaJuegoFormType;
+use App\Form\EditaEventoFormType;
 use App\Form\EditaJuegoFormType;
+use App\Repository\EventoRepository;
 use App\Repository\JuegoRepository;
 use App\Repository\TramoRepository;
 use App\Repository\UsuarioRepository;
@@ -14,6 +18,8 @@ use App\Service\PintaNombre;
 use App\Service\QueCalorHace;
 use App\Service\XokasMailer;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +40,16 @@ class MainController extends AbstractController
         return $this->render('index.html.twig', ['juegos' => $juegos, 'tramos' => $tramos]);
     }
 
-    // TODO: Hacer que solo pueda acceder un admin
+    #[Route('/eventos', name: 'eventos')]
+    public function eventos(EventoRepository $repoEvent): Response
+    {
+        $eventos = $repoEvent->findAll();
+
+
+        return $this->render('eventos/index.html.twig', ['eventos' => $eventos]);
+    }
+
+    #[IsGranted("ROLE_ADMIN")]
     #[Route('/formularioJuego/{id}', name: 'formularioJuego')]
     public function formuJuego(Request $request, JuegoRepository $repoJueg, SluggerInterface $slugger, int $id = null): Response
     {
@@ -81,9 +96,9 @@ class MainController extends AbstractController
         return $this->render('juegos/formulario.html.twig', ['formuJuego' => $formuJuego, 'juego' => $juego]);
     }
 
-    // TODO: Hacer que solo pueda acceder un admin
+    #[IsGranted("ROLE_ADMIN")]
     #[Route('/borraJuego/{id}', name: 'borraJuego')]
-    public function FunctionName(JuegoRepository $repoJueg, int $id): Response
+    public function borraJuego(JuegoRepository $repoJueg, int $id): Response
     {
         $juego = $repoJueg->find($id);
 
@@ -92,13 +107,77 @@ class MainController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
+    #[IsGranted("ROLE_ADMIN")]
+    #[Route('/formularioEvento/{id}', name: 'formularioEvento')]
+    public function formuEvento(Request $request, EventoRepository $repoEven, SluggerInterface $slugger, int $id = null)
+    {
+        if ($id !== null) {
+            $evento = $repoEven->find($id);
+            $formuEvento = $this->createForm(EditaEventoFormType::class, $evento);
+            // $img = $eve->getImagen();
+        } else {
+            $evento = new Evento();
+            $formuEvento = $this->createForm(EditaEventoFormType::class, $evento);
+        }
+
+        $formuEvento->handleRequest($request);
+
+        if ($formuEvento->isSubmitted() && $formuEvento->isValid()) {
+
+            // if ($id === null || $formuEvento['imagen']->getData() !== null) {
+            //     $img = $formuEvento['imagen']->getData();
+            // }
+
+            $nuevoEvento = $formuEvento->getData();
+
+            // if ($id === null || $formuEvento['imagen']->getData() !== null) {
+            //     $originalFilename = pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME);
+            //     $safeFileName = $slugger->slug($originalFilename);
+            //     $newFilename = $safeFileName . '-' . uniqid() . '.' . $img->guessExtension();
+
+            //     try {
+            //         $img->move('img/juegos/', $newFilename);
+
+            //         $nuevoEvento->setImagen($newFilename);
+            //     } catch (FileException $e) {
+            //         throw $e;
+            //     }
+            // } else {
+            //     $nuevoEvento->setImagen($img);
+            // }
+
+            $repoEven->save($nuevoEvento, true);
+
+            return $this->redirectToRoute('eventos');
+        }
+
+        return $this->render('eventos/formulario.html.twig', [
+            'formuEvento' => $formuEvento,
+            'evento' => $evento,
+            "invitaciones" => $evento->getInvitacionesNotLazy(),
+            "presentaciones" => $evento->getPresentacionesNotLazy()
+        ]);
+    }
+
+    #[IsGranted("ROLE_ADMIN")]
+    #[Route('/borraEvento/{id}', name: 'borraEvento')]
+    public function borraEvento(EventoRepository $repoEven, int $id)
+    {
+        $evento = $repoEven->find($id);
+
+        $repoEven->remove($evento, true);
+
+        return $this->redirectToRoute('eventos');
+    }
+
+    #[IsGranted("ROLE_ADMIN")]
     #[Route('/mantenimientoSala', name: 'mantenimientoSala')]
     public function mantenimientoSala(): Response
     {
         return $this->render('sala/mantenimiento.html.twig');
     }
 
-    // TODO: Hacer que solo pueda acceder un admin
+    #[IsGranted("ROLE_ADMIN")]
     #[Route('/haceAdmin/{id}', name: 'haceAdmin')]
     public function haceAdmin(UsuarioRepository $repo, ManagerRegistry $manager, int $id): Response
     {

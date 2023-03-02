@@ -2,18 +2,24 @@ $(async function () {
     var sala = new Sala($('#sala'));
     var almacen = new Almacen($('#almacen'));
     var selectDistri = $('#selectDistribuciones');
-    var dialog = $("#dialog-nueva-distri");
+    var dialogDistri = $("#dialog-nueva-distri");
+    var dialogMesa = $("#dialog-nueva-mesa");
     var dateDistri = $("#datepicker-Distri");
 
     // pedimos las distribuciones
     var distribuciones = await getDistribuciones();
 
-    // logica de dialog
-    creaDialog(dialog, dateDistri, distribuciones, selectDistri);
+    // logica de dialogDistri
+    creaDialogDistri(dialogDistri, dateDistri, distribuciones, selectDistri);
+    creaDialogMesa(dialogMesa, almacen);
     creaDatePickerDistribuciones(dateDistri, distribuciones);
 
     $('.c-mantenimiento-sala__creaDistri').click(() => {
-        dialog.dialog('open');
+        dialogDistri.dialog('open');
+    })
+
+    $('.c-mantenimiento-sala__creaMesa').click(() => {
+        dialogMesa.dialog('open');
     })
 
     // rellenamos el select de distribuciones
@@ -125,7 +131,7 @@ function pintaSalaBase(sala, almacen) {
         url: "/api/mesa",
         success: function (response) {
             response.mesas.forEach(mesa => {
-                let nuevaMesa = new Mesa(mesa.posX, mesa.posY, mesa.ancho, mesa.alto, mesa.sillas, mesa.id);
+                let nuevaMesa = new Mesa(mesa.posX, mesa.posY, mesa.ancho, mesa.alto, mesa.sillas, mesa.id, mesa.reservas);
                 nuevaMesa.creaDiv();
 
                 if (nuevaMesa.left >= 0 && nuevaMesa.top >= 0) {
@@ -162,7 +168,7 @@ function pintaMesasDistribucion(distribucion, sala, almacen) {
     });
 }
 
-async function creaDialog(dialog, dateDistri, distribuciones, selectDistri) {
+async function creaDialogDistri(dialog, dateDistri, distribuciones, selectDistri) {
     dialog.dialog({
         resizable: false,
         height: "auto",
@@ -181,6 +187,54 @@ async function creaDialog(dialog, dateDistri, distribuciones, selectDistri) {
                     actualizaSelectDistri(distribuciones, selectDistri);
                 } else {
                     console.log('error');
+                }
+            },
+        }
+    }).dialog('close');
+}
+
+function creaDialogMesa(dialog, almacen) {
+    dialog.dialog({
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            'Cancelar': function () {
+                $(this).dialog("close");
+            },
+            "Crear": async function () {
+                campos = $(this).find('input');
+                let formuCompleto = true;
+
+                campos.each((i) => {
+                    let campo = campos.eq(i)
+                    if (campo.val() === '') {
+                        formuCompleto = false;
+                    }
+                });
+
+                if (formuCompleto) {
+                    let newMes = {
+                        mesa: JSON.stringify({
+                            ancho: campos.eq(0).val(),
+                            alto: campos.eq(1).val(),
+                            posX: -1,
+                            posY: -1,
+                            sillas: parseInt(campos.eq(2).val()),
+                        })
+                    };
+
+                    $.post("/api/mesa", newMes,
+                        function (data) {
+                            dialog.dialog("close");
+                            let mesa = data.mesa;
+                            let nuevaMesa = new Mesa(mesa.posX, mesa.posY, mesa.ancho, mesa.alto, mesa.sillas, mesa.id, mesa.reservas);
+
+                            nuevaMesa.creaDiv();
+                            almacen.addMesa(nuevaMesa);
+                        }
+                    );
                 }
             },
         }
@@ -236,5 +290,5 @@ async function creaDistribucion(datepicker) {
     }
     let response = await $.post("/api/distribucion", newDistri)
 
-    return  response.distribucion; 
+    return response.distribucion;
 }

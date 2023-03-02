@@ -123,6 +123,17 @@ class Mesa implements JsonSerializable
         return $this;
     }
 
+    public function getReservasNotLazy(): array
+    {
+        $reservas = [];
+
+        foreach ($this->getReservas() as $reserva) {
+            $reservas[] = $reserva;
+        }
+
+        return $reservas;
+    }
+
     public function removeReserva(Reserva $reserva): self
     {
         if ($this->reservas->removeElement($reserva)) {
@@ -144,7 +155,7 @@ class Mesa implements JsonSerializable
         $std->posX = $this->getPosX();
         $std->posY = $this->getPosY();
         $std->sillas = $this->getSillas();
-        $std->reservas = $this->getReservas();
+        $std->reservas = $this->getReservasNotLazy();
 
         return $std;
     }

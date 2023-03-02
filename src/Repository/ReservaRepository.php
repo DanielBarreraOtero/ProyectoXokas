@@ -62,7 +62,7 @@ class ReservaRepository extends ServiceEntityRepository
 
         // creamos una query nativa ya que el query builder da problemas a la hora de usar la funcion maketime
         // y devolvemos el resultado
-        return $this->getEntityManager()->createNativeQuery("select * from reserva as r
+        return $this->getEntityManager()->createNativeQuery("select r.* from reserva as r
         join tramo as t
         on r.tramo_inicio_id = t.id
         where r.fecha = '$fecha' and
